@@ -1,0 +1,19 @@
+{
+  "name": "flexdj",
+  "version": "1.0.0",
+  "description": "Web app for cross-platform playlist creation + more.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marclewis8/FlexDJ.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marclewis8/FlexDJ/issues"
+  },
+  "homepage": "https://github.com/marclewis8/FlexDJ#readme"
+}
