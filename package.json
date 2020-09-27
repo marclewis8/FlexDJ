@@ -4,7 +4,10 @@
   "description": "Web app for cross-platform playlist creation + more.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/marclewis8/FlexDJ/issues"
   },
-  "homepage": "https://github.com/marclewis8/FlexDJ#readme"
+  "homepage": "https://github.com/marclewis8/FlexDJ#readme",
+  "dependencies": {
+    "antd": "^4.6.6",
+    "next": "^9.5.3",
+    "node-sass": "^4.14.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
 }
