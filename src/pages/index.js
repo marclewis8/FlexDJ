@@ -1,4 +1,4 @@
-import "../styles/styles.scss";
+// import "../styles/styles.scss";
 
 function HomePage() {
     return <div>Welcome to Next.js!</div>
