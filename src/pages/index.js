@@ -1,7 +1,14 @@
-// import "../styles/styles.scss";
+import { Typography } from "antd";
+import MyApp from "./_app";
 
-function HomePage() {
-    return <div>Welcome to Next.js!</div>
-  }
-  
-  export default HomePage
+const { Title } = Typography;
+
+function Home() {
+  return (
+    <div>
+      <Title>FlexDJ</Title>
+    </div>
+  );
+}
+
+export default Home;
