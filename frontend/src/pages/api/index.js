@@ -5,8 +5,8 @@ const port = 3001;
 
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.status(200).send("<p>Foo</p>");
+app.get("/user/id", (req, res) => {
+  res.status(200).json({ name: "Chazz", email: "chazz@gmail.com" });
 });
 app.listen(port, () => {
   console.log("Server live");
