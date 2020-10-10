@@ -1,24 +1,17 @@
 {
-   "type": "postgres",
-   "host": "localhost",
-   "port": 5432,
-   "username": "test",
-   "password": "test",
-   "database": "test",
-   "synchronize": true,
-   "logging": false,
-   "entities": [
-      "src/entity/**/*.ts"
-   ],
-   "migrations": [
-      "src/migration/**/*.ts"
-   ],
-   "subscribers": [
-      "src/subscriber/**/*.ts"
-   ],
-   "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-   }
+  "host": "localhost",
+  "username": "chiazo",
+  "password": "1009244",
+  "database": "flexdj",
+  "port": 5432,
+  "logging": true,
+  "synchronize": false,
+  "type": "postgres",
+  "entities": ["/Users/chiazo/code/FlexDJ/backend/src/entity/*{.ts,.js}"],
+  "migrations": ["/Users/chiazo/code/FlexDJ/backend/src/migration/*{.ts,.js}"],
+  "migrationsRun": true,
+  "cli": {
+    "migrationsDir": "/Users/chiazo/code/FlexDJ/backend/src/migration",
+    "entitiesDir": "/Users/chiazo/code/FlexDJ/backend/src/entity"
+  }
 }

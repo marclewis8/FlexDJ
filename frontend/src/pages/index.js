@@ -1,5 +1,4 @@
 import { Typography } from "antd";
-import MyApp from "./_app";
 
 const { Title } = Typography;
 
@@ -7,6 +6,7 @@ function Home() {
   return (
     <div>
       <Title>FlexDJ</Title>
+      <p>Hello Next.js, this is your friend Brian from logrocket</p>
     </div>
   );
 }

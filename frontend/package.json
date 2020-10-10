@@ -20,16 +20,22 @@
   },
   "homepage": "https://github.com/marclewis8/FlexDJ#readme",
   "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
     "antd": "^4.6.6",
-    "next": "^9.5.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "next": "^9.5.5",
+    "nextjs-fonts": "^0.22.0",
     "node-sass": "^4.14.1",
-    "pg": "^8.3.3",
+    "pg": "^8.4.1",
+    "pg-promise": "^10.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.26"
   },
   "devDependencies": {
-    "@types/node": "^14.11.2"
+    "@types/node": "^14.11.2",
+    "prettier": "2.1.2"
   }
 }
