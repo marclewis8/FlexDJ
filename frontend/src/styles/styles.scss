@@ -17,12 +17,30 @@ body {
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+#sidetitle {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    font-family: Cambria;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 60px;
+    color: #F2F2F2;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 h2 {
     font-family: Cambria;
     font-style: normal;
     font-weight: normal;
     color: #F2F2F2;
     font-size: 30px;
+}
+
+label {
+    color: #F2F2F2;
+    font-family: Cambria;
+    font-size: 20px;
 }
 
 input {
@@ -50,4 +68,9 @@ button {
     font-size: 20px;
     margin: 10px;
     color: #4e5250;
+}
+
+#sign {
+    position: fixed;
+    top: 50%;
 }
