@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link'
+import React from 'react'
+import { Button } from 'antd'
 
 
 function Home() {
@@ -14,11 +17,10 @@ function Home() {
     <div>
       <h1 id="title">FlexDJ</h1>
       <h2>Explore your favorite music from Spotify, YouTube, and SoundCloud!</h2>
-      <div>
-        <SearchBox/>
-      </div>
-      <h2>Sign in to create playlists!</h2>
-      <Login></Login>
+        <div id="sign">
+          <h2>Sign in to start creating playlists!</h2>
+          <Login></Login>
+        </div>
     </div>
   );
 }
@@ -35,8 +37,10 @@ function Login() {
         <input className="input" type="text" placeholder="Username"></input>
         <input className="input" type="text" placeholder="Password"></input>
         <div id="login">
-            <button type="submit">Login</button>
-            <button type="submit">Sign Up</button>
+            <Link href="/signup">
+              <Button>Sign Up</Button>
+            </Link>
+            <button type="submit">Log in</button>
         </div>
       </div>
   )
