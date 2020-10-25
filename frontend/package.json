@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Web app for cross-platform playlist creation + more.",
   "main": "index.js",
+  "proxy": "http://localhost:3001",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "dev": "NODE_ENV='development' node src/pages/api/server.js",
+    "build": "next build && next export"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,9 @@
     "@zeit/next-sass": "^1.0.1",
     "antd": "^4.6.6",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.6",
     "next": "^9.5.5",
     "nextjs-fonts": "^0.22.0",
     "node-sass": "^4.14.1",
