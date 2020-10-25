@@ -17,7 +17,18 @@ The port is also defined in this file, which in this case is `3001`. After runni
 ## To Start Entire Local Dev
 
 - cd into backend: `cd backend`
-- run `npm run dev`
+- run `npm run dev` - this starts the backend server at localhost:3001
+- run `npm run typeorm:run` - this will update your database if anyone made changes
 - open new terminal
 - cd into frontend: `../frontend`
 - run `npm run dev`
+
+## Make changes to database?
+
+- run `npm run typeorm:migrate <insert name of new changes>` (ex: `typeorm:migrate AddUserTable`)
+- commit these changes to github so we can all update our databases with your changes!
+
+## Want to undo changes you made after generating a migration?
+
+- run `npm run typeorm:revert` - this will undo the last changes to the database you ran!
+
