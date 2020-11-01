@@ -15,6 +15,9 @@ function Home() {
       </div>
       <h2>Sign in to create playlists!</h2>
       <Login></Login>
+      <Link href="./platapi">
+          <Button type="submit">Spotify</Button>
+        </Link>
     </div>
   );
 }
@@ -36,7 +39,9 @@ function Login() {
       <input className="input" type="password" placeholder="Password"></input>
       <div id="login">
         <Button type="submit">Login</Button>
-        <Button type="submit">Sign Up</Button>
+        <Link href="./signup">
+          <Button type="submit">Sign Up</Button>
+        </Link>
       </div>
     </div>
   );
