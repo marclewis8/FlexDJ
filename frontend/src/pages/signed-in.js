@@ -10,6 +10,11 @@ function SignedIn() {
       <div>
         <SearchBox />
       </div>
+      <h2>Sign in to create playlists!</h2>
+      <Login></Login>
+      <Link href="./platapi">
+        <Button type="submit">Spotify</Button>
+      </Link>
     </div>
   );
 }
