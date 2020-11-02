@@ -1,27 +1,49 @@
-import { Controller, Get, Post, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Param, Query } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
+import { Request } from 'express';
+
+import { UserRegisterDto } from './dto';
+import { assertUser } from '../auth/assert-user';
+import { register, sessionLogin } from '../auth/user-auth';
 
 @Controller('user')
+// @UseGuards(IsAuthenticatedGuard)
 export class UserController {
-  @Get()
+  @Get('all')
   getUsers(): string {
     return 'This request returns all users';
   }
 
-  @Get()
+  @Get('user-count')
   getUsersCount(): number {
+    return 0;
+  }
+
+  @Get('curr')
+  getCurrentUser(@Query('req') req): number {
     return 0;
   }
 
   @Get(':id')
   getUserId(@Param('id') id: number): string {
-    console.log(id);
     return `this request returns the user with id ${id}`;
   }
 
+  @Post('add-user')
+  @ApiResponse({ status: 201 })
   @Post()
-  addUser(@Query('req') req): string {
-    const { name, email } = req;
-    console.log(`${name} - ${email}`);
-    return 'this request will add a user to the database';
+  async addUser(@Body() userData: UserRegisterDto, @Req() request: Request) {
+    const { email, password, firstName, lastName } = userData;
+    const { id: oktaUserId } = await register({
+      email,
+      password,
+      firstName,
+      lastName,
+    });
+    const user = await assertUser(oktaUserId);
+    const { sessionId } = await sessionLogin({ email, password });
+    request.res.cookie('sessionId', sessionId);
+
+    return { id: user.id, email, firstName, lastName };
   }
 }
