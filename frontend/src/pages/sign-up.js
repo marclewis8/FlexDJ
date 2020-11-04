@@ -3,7 +3,7 @@ import { Form, Input, Button, DatePicker } from 'antd';
 import { Footer, Navbar } from '../components';
 
 import { postUserSignUp } from '../endpoints/';
-import '../styles/signup.less';
+import '../styles/styles.less';
 
 function Signup() {
   return (
