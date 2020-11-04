@@ -15,10 +15,19 @@
   border-bottom: transparent;
 }
 
+h1 {
+  margin-bottom: 0;
+}
+
 .nav {
   z-index: 1;
   width: 100%;
-  margin-bottom: 5rem;
+}
+
+.homepage {
+  .nav {
+    margin-bottom: 5rem;
+  }
 }
 
 .ant-menu-horizontal > .ant-menu-item:hover,
@@ -43,6 +52,10 @@ a:hover,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected {
   color: #eee;
   border-bottom: transparent;
+}
+
+.ant-menu-horizontal > .ant-menu-item a {
+  color: #442eb5;
 }
 
 .logo {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 function SignedIn() {
   return (
@@ -11,9 +12,8 @@ function SignedIn() {
         <SearchBox />
       </div>
       <h2>Sign in to create playlists!</h2>
-      <Login></Login>
       <Link href="./platapi">
-        <Button type="submit">Spotify</Button>
+        <button type="submit">Spotify</button>
       </Link>
     </div>
   );
