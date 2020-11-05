@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Footer, Navbar } from '../components';
 import { Button, List, Card } from 'antd';
 
+import '../styles/playlists.less';
+
 function Playlists() {
   return (
     <div className="playlists">
