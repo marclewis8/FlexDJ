@@ -18,6 +18,10 @@ export class UserRegisterDto {
   @ApiProperty()
   @IsNotEmpty()
   lastName: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  birthday: string;
 }
 
 export class LoginDto {

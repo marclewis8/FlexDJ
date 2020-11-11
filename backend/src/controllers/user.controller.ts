@@ -4,6 +4,7 @@ import { Request } from 'express';
 
 import { UserRegisterDto } from './dto';
 import { assertUser } from '../auth/assert-user';
+import { User } from '../entity/User';
 import { register, sessionLogin } from '../auth/user-auth';
 
 @Controller('user')
@@ -30,17 +31,17 @@ export class UserController {
   }
 
   @Post('add-user')
-  @ApiResponse({ status: 201 })
+  @ApiResponse({ type: User, status: 201 })
   @Post()
   async addUser(@Body() userData: UserRegisterDto, @Req() request: Request) {
-    const { email, password, firstName, lastName } = userData;
-    const { id: oktaUserId } = await register({
+    const { email, password, firstName, lastName, birthday } = userData;
+    const { id: oktaId } = await register({
       email,
       password,
       firstName,
       lastName,
     });
-    const user = await assertUser(oktaUserId);
+    const user = await assertUser(oktaId, email, firstName, lastName, birthday);
     const { sessionId } = await sessionLogin({ email, password });
     request.res.cookie('sessionId', sessionId);
 
