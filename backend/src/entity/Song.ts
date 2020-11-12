@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Playlist } from './Playlist';
 
-@Entity({ name: 'playlists' })
+@Entity({ name: 'songs' })
 export class Song {
   @PrimaryGeneratedColumn('uuid', {
     name: 'id',
@@ -19,4 +26,8 @@ export class Song {
 
   @Column()
   url: string;
+
+  @ManyToMany(() => Playlist, (playlist) => playlist.songs)
+  @JoinTable()
+  playlists: Playlist[];
 }
