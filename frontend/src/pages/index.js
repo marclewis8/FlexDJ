@@ -18,6 +18,7 @@ function Home() {
         <SignedIn />
       ) : (
         <div className="content">
+          <h1 id="title">FlexDJ</h1>
           <h2>Sign in to create playlists!</h2>
           <div>
             <input className="input" type="text" placeholder="Username"></input>

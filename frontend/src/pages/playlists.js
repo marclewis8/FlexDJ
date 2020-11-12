@@ -64,10 +64,7 @@ function PlaylistsView() {
       dataSource={data}
       renderItem={(item) => (
         <List.Item>
-          <Card
-            title={item.title}
-            extra={[<a href="404">View </a>, <a href="404">| Edit</a>]}
-          >
+          <Card title={item.title} extra={[<a href="indv-playlist">View </a>]}>
             {item.songs}
           </Card>
         </List.Item>
