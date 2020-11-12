@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 function SpotifyRequests() {
-  let url = window.location;
+  // let url = window.location.href;
 
-  let access_token = new URLSearchParams(url.search).get('access_token');
-  alert(access_token);
-  return <button onClick={getPlaylistTracks}></button>;
+  // let access_token = new URLSearchParams(url.search).get('access_token');
+  // alert(access_token);
+  return <button onClick={searchTrack}></button>;
 }
 
 function ArtistInfo() {
@@ -72,6 +71,41 @@ async function getPlaylistTracks() {
   let data = await res.data;
 
   return data;
+}
+
+async function searchArtist(artistName) {
+  let res = await axios({
+    method: 'get',
+    url: 'https://api.spotify.com/v1/search',
+    params: {
+      q: 'kygo',
+      type: 'artist',
+    },
+    headers: {
+      Authorization:
+        'Bearer BQA1ImTvTgeTzTMYxVmaRIzgQ1Oo0_AC3cLXQ1PcdNrQwI4lt1dWPKwnB3BRJ3gQXAa4AEvsXbUAKs_PWU-GIqPrLw_nsIYjRLyFJjyg66IkrW0V83o8VRi6fR98OmX58-7uT5OGgnQxYk92LUTSjFWLupX-87GJJlfxfckzK-uLehGSo68',
+    },
+  });
+
+  let data = await res.data;
+}
+
+async function searchTrack(trackName) {
+  let res = await axios({
+    method: 'get',
+    url: 'https://api.spotify.com/v1/search',
+    params: {
+      q: 'bet on it',
+      type: 'track',
+      market: 'US',
+    },
+    headers: {
+      Authorization:
+        'Bearer BQA1ImTvTgeTzTMYxVmaRIzgQ1Oo0_AC3cLXQ1PcdNrQwI4lt1dWPKwnB3BRJ3gQXAa4AEvsXbUAKs_PWU-GIqPrLw_nsIYjRLyFJjyg66IkrW0V83o8VRi6fR98OmX58-7uT5OGgnQxYk92LUTSjFWLupX-87GJJlfxfckzK-uLehGSo68',
+    },
+  });
+
+  let data = await res.data;
 }
 
 export default SpotifyRequests;
