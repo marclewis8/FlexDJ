@@ -27,6 +27,7 @@ function Home() {
         <SignedIn />
       ) : (
         <div className="content">
+          <h1 id="title">FlexDJ</h1>
           <h2>Sign in to create playlists!</h2>
           <Form onFinish={signIn}>
             <Row>
@@ -57,6 +58,9 @@ function Home() {
               <button type="submit">Login</button>
               <Link href="/sign-up">
                 <button>Sign Up</button>
+              </Link>
+              <Link href="/platapi">
+                <button type="submit">Spotify</button>
               </Link>
             </div>
           </Form>
