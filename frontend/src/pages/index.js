@@ -1,40 +1,65 @@
-import { useState } from 'react';
-import React from 'react';
-import { default as SignedIn } from './signed-in';
+import React, { useContext } from 'react';
+import { Form, Row, Input, Col, Modal } from 'antd';
 import Link from 'next/link';
-import { Footer, Navbar } from '../components';
+
+import { default as SignedIn } from './signed-in';
+import { Footer, Navbar, UserContext } from '../components';
+import { postUserLogin } from '../endpoints';
 
 function Home() {
-  const [signedIn, setSignedIn] = useState(false);
-
-  const signIn = () => {
-    setSignedIn(true);
+  const { user, storeUser } = useContext(UserContext) || {};
+  const signIn = async (values) => {
+    const result = await postUserLogin(values);
+    if (result.success) {
+      storeUser(result.data);
+    } else {
+      return Modal.error({
+        title: 'Login Failed',
+        content: 'Invalid email or password. Try again.',
+      });
+    }
   };
 
   return (
     <div className="homepage">
       <Navbar />
-      {signedIn ? (
+      {user ? (
         <SignedIn />
       ) : (
         <div className="content">
           <h2>Sign in to create playlists!</h2>
-          <div>
-            <input className="input" type="text" placeholder="Username"></input>
-            <input
-              className="input"
-              type="password"
-              placeholder="Password"
-            ></input>
+          <Form onFinish={signIn}>
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  name="username"
+                  rules={[
+                    { required: true, message: 'Please input your username!' },
+                  ]}
+                >
+                  <Input className="input" placeholder="Username" />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  rules={[
+                    { required: true, message: 'Please input your username!' },
+                  ]}
+                >
+                  <Input
+                    className="input"
+                    type="password"
+                    placeholder="Password"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
             <div id="login">
-              <button type="submit" onClick={signIn}>
-                Login
-              </button>
+              <button type="submit">Login</button>
               <Link href="/sign-up">
-                <button type="submit">Sign Up</button>
+                <button>Sign Up</button>
               </Link>
             </div>
-          </div>
+          </Form>
         </div>
       )}
       <Footer />

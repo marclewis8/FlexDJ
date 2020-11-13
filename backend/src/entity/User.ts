@@ -28,4 +28,8 @@ export class User {
   @ApiProperty()
   @Column()
   birthdate: string;
+
+  @ApiProperty()
+  @Column()
+  username: string;
 }
