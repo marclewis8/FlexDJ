@@ -19,6 +19,7 @@ const nextConfig = {
   env: {
     spaceID: process.env.spaceID,
     accessTokenDelivery: process.env.accessTokenDelivery,
+    spotifyClientID: process.env.spotifyClientID,
   },
   distDir: '.next',
 };
