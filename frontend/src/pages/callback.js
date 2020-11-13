@@ -1,12 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 function SpotifyRequests() {
-  // let url = window.location.href;
+  const [token, setToken] = useState(null);
+  const location = useRouter();
+  const [url, setUrl] = useState(null);
+  useEffect(() => {
+    setToken(new URLSearchParams(location.pathname).get('#access_token'));
+  }, [location]);
 
-  // let access_token = new URLSearchParams(url.search).get('access_token');
-  // alert(access_token);
-  return <button onClick={searchTrack}></button>;
+  let data = searchTrack('bet on it', token);
+  return <div>{data}</div>;
 }
 
 function ArtistInfo() {
@@ -14,12 +19,11 @@ function ArtistInfo() {
 }
 
 async function getArtist() {
-  let res = await axios({
+  let res = axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/artists/5CCwRZC6euC8Odo6y9X8jr',
     headers: {
-      Authorization:
-        'Bearer BQAtLhM8O5AYEWuXW3P20luCbRic4aFs6tCWv678mYybFhbLHlmEYwwzvDCpREcwGdidkNbFkUcQeI67ye92zsupeNYjIbXQw6qRMsVcmcXoEtDxNe_8vyHPHYbM0WI6GB8UN1K094dUtuLYCI6cpC40EOa1htlzDNSYubAKScqXpXyK_xU',
+      Authorization: 'Bearer ' + token,
     },
   });
 
@@ -28,13 +32,12 @@ async function getArtist() {
   return data;
 }
 
-async function getCategories() {
+async function getCategories(token) {
   let res = await axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/browse/categories',
     headers: {
-      Authorization:
-        'Bearer BQAtLhM8O5AYEWuXW3P20luCbRic4aFs6tCWv678mYybFhbLHlmEYwwzvDCpREcwGdidkNbFkUcQeI67ye92zsupeNYjIbXQw6qRMsVcmcXoEtDxNe_8vyHPHYbM0WI6GB8UN1K094dUtuLYCI6cpC40EOa1htlzDNSYubAKScqXpXyK_xU',
+      Authorization: 'Bearer ' + token,
     },
   });
 
@@ -48,8 +51,7 @@ async function getPlaylist() {
     method: 'get',
     url: 'https://api.spotify.com/v1/me/playlists',
     headers: {
-      Authorization:
-        'Bearer BQAtLhM8O5AYEWuXW3P20luCbRic4aFs6tCWv678mYybFhbLHlmEYwwzvDCpREcwGdidkNbFkUcQeI67ye92zsupeNYjIbXQw6qRMsVcmcXoEtDxNe_8vyHPHYbM0WI6GB8UN1K094dUtuLYCI6cpC40EOa1htlzDNSYubAKScqXpXyK_xU',
+      Authorization: 'Bearer ' + token,
     },
   });
 
@@ -63,8 +65,7 @@ async function getPlaylistTracks() {
     method: 'get',
     url: 'https://api.spotify.com/v1/playlists/4hLJS87n7SxiTbhq40I1E6/tracks',
     headers: {
-      Authorization:
-        'Bearer BQAtLhM8O5AYEWuXW3P20luCbRic4aFs6tCWv678mYybFhbLHlmEYwwzvDCpREcwGdidkNbFkUcQeI67ye92zsupeNYjIbXQw6qRMsVcmcXoEtDxNe_8vyHPHYbM0WI6GB8UN1K094dUtuLYCI6cpC40EOa1htlzDNSYubAKScqXpXyK_xU',
+      Authorization: 'Bearer ' + token,
     },
   });
 
@@ -82,30 +83,36 @@ async function searchArtist(artistName) {
       type: 'artist',
     },
     headers: {
-      Authorization:
-        'Bearer BQA1ImTvTgeTzTMYxVmaRIzgQ1Oo0_AC3cLXQ1PcdNrQwI4lt1dWPKwnB3BRJ3gQXAa4AEvsXbUAKs_PWU-GIqPrLw_nsIYjRLyFJjyg66IkrW0V83o8VRi6fR98OmX58-7uT5OGgnQxYk92LUTSjFWLupX-87GJJlfxfckzK-uLehGSo68',
+      Authorization: 'Bearer ' + token,
     },
   });
 
   let data = await res.data;
 }
 
-async function searchTrack(trackName) {
-  let res = await axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/search',
-    params: {
-      q: 'bet on it',
-      type: 'track',
-      market: 'US',
-    },
-    headers: {
-      Authorization:
-        'Bearer BQA1ImTvTgeTzTMYxVmaRIzgQ1Oo0_AC3cLXQ1PcdNrQwI4lt1dWPKwnB3BRJ3gQXAa4AEvsXbUAKs_PWU-GIqPrLw_nsIYjRLyFJjyg66IkrW0V83o8VRi6fR98OmX58-7uT5OGgnQxYk92LUTSjFWLupX-87GJJlfxfckzK-uLehGSo68',
-    },
-  });
+function searchTrack(trackName, token) {
+  const [data, setData] = useState(null);
 
-  let data = await res.data;
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: 'https://api.spotify.com/v1/search',
+      params: {
+        q: trackName,
+        type: 'track',
+        market: 'US',
+      },
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    }).then((res) => {
+      setData(res.data);
+    });
+  }, [data]);
+
+  console.log(data.tracks.href);
+
+  return data;
 }
 
 export default SpotifyRequests;

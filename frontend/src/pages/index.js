@@ -33,6 +33,9 @@ function Home() {
               <Link href="/sign-up">
                 <button type="submit">Sign Up</button>
               </Link>
+              <Link href="/platapi">
+                <button type="submit">Spotify</button>
+              </Link>
             </div>
           </div>
         </div>
