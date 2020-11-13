@@ -18,7 +18,7 @@ function ArtistInfo() {
   return <button onClick={getPlaylist}></button>;
 }
 
-async function getArtist() {
+async function getArtist(token) {
   let res = axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/artists/5CCwRZC6euC8Odo6y9X8jr',
@@ -46,7 +46,7 @@ async function getCategories(token) {
   return data;
 }
 
-async function getPlaylist() {
+async function getPlaylist(token) {
   let res = await axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/me/playlists',
@@ -60,7 +60,7 @@ async function getPlaylist() {
   return data;
 }
 
-async function getPlaylistTracks() {
+async function getPlaylistTracks(token) {
   let res = await axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/playlists/4hLJS87n7SxiTbhq40I1E6/tracks',
@@ -74,12 +74,12 @@ async function getPlaylistTracks() {
   return data;
 }
 
-async function searchArtist(artistName) {
+async function searchArtist(artistName, token) {
   let res = await axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/search',
     params: {
-      q: 'kygo',
+      q: artistName,
       type: 'artist',
     },
     headers: {
