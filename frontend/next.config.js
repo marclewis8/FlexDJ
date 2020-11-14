@@ -20,6 +20,7 @@ const nextConfig = {
     spaceID: process.env.spaceID,
     accessTokenDelivery: process.env.accessTokenDelivery,
     spotifyClientID: process.env.spotifyClientID,
+    youtubeAPIKey: process.env.youtubeAPIKey,
   },
   distDir: '.next',
 };
