@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import { Form, Input, Button, DatePicker, Row, Col } from 'antd';
-import { Footer, Navbar } from '../components';
+import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { Form, Input, Button, DatePicker, Row, Col, Modal } from 'antd';
+import { Footer, Navbar, UserContext } from '../components';
 
 import { postUserSignUp } from '../endpoints/';
 import '../styles/signup.less';
@@ -19,23 +20,26 @@ function Signup() {
 }
 
 function MakeForm() {
-  const onFinish = (values) => {
-    postUserSignUp(values);
-  };
+  const { storeUser } = useContext(UserContext) || {};
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+  const router = useRouter();
+  const onFinish = async (values) => {
+    const result = await postUserSignUp(values);
+    if (result.success) {
+      storeUser(result.data);
+      router.push('/');
+    } else {
+      return Modal.error({
+        title: 'Login Failed',
+        content: result.message,
+      });
+    }
   };
 
   return (
     <div className="signup">
       <h2>Start your FlexDJ journey here!</h2>
-      <Form
-        name="basic"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
+      <Form name="basic" initialValues={{ remember: true }} onFinish={onFinish}>
         <Row>
           <Col span={12}>
             <Form.Item

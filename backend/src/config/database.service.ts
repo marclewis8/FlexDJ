@@ -1,10 +1,10 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+import { User, Playlist, Song } from '../entity';
 
 dotenv.config();
-const baseDir = path.join(__dirname, '../');
+const baseDir = path.join(__dirname, '../../');
 const type: any = process.env.TYPEORM_CONNECTION;
-
 export default {
   host: process.env.TYPEORM_HOST,
   username: process.env.TYPEORM_USERNAME,
@@ -14,7 +14,7 @@ export default {
   logging: true,
   synchronize: false,
   type,
-  entities: [baseDir + process.env.TYPEORM_ENTITIES],
+  entities: [User, Playlist, Song],
   migrations: [baseDir + process.env.TYPEORM_MIGRATIONS],
   migrationsRun: process.env.TYPEORM_MIGRATIONS_RUN === 'true',
   cli: {

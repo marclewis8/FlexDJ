@@ -1,16 +1,28 @@
-import { getManager } from 'typeorm';
-import { User as Test } from '../entity/User';
+import { getCustomRepository } from 'typeorm';
+import { UserRepository } from '../repos';
 
-export async function assertUser(oktaUserId: string) {
-  const manager = getManager();
-  const existingUser = await manager.findOne(Test, {
-    where: { oktaUserId },
+export async function assertUser(
+  oktaId,
+  email = '',
+  firstName = '',
+  lastName = '',
+  birthday = '',
+  username = '',
+) {
+  const userRepo = getCustomRepository(UserRepository);
+  const existingUser = await userRepo.findOne({
+    where: { oktaId },
   });
   if (existingUser) {
     return existingUser;
   }
 
-  const user = new Test();
-  user.oktaId = oktaUserId;
-  return await manager.save(user);
+  return userRepo.createAndSave(
+    oktaId,
+    email,
+    firstName,
+    lastName,
+    birthday,
+    username,
+  );
 }
