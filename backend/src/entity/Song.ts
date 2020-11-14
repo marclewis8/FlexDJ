@@ -22,6 +22,10 @@ export class Song {
 
   @ApiProperty()
   @Column()
+  externalId: string;
+
+  @ApiProperty()
+  @Column()
   artist: string;
 
   @ApiProperty()
@@ -32,10 +36,7 @@ export class Song {
   @Column()
   url: string;
 
-  @ManyToMany(
-    () => Playlist,
-    playlist => playlist.songs,
-  )
+  @ManyToMany(() => Playlist, (playlist) => playlist.songs)
   @JoinTable()
   playlists: Playlist[];
 }

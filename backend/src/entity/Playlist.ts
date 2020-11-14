@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { User, Song } from './';
 
-@Entity()
+@Entity({ name: 'playlists' })
 export class Playlist {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid', {
@@ -28,15 +28,9 @@ export class Playlist {
   @Column()
   icon: string; // URL or relative path?
 
-  @ManyToOne(
-    () => User,
-    user => user.playlists,
-  )
+  @ManyToOne(() => User, (user) => user.playlists)
   user: User;
 
-  @ManyToMany(
-    () => Song,
-    song => song.playlists,
-  )
+  @ManyToMany(() => Song, (song) => song.playlists)
   songs: Song[];
 }

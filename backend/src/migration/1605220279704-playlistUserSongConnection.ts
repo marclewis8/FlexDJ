@@ -12,9 +12,6 @@ export class playlistUserSongConnection1605220279704
       `CREATE TABLE "playlist" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "genre" character varying NOT NULL, "icon" character varying NOT NULL, "userId" uuid, CONSTRAINT "PK_538c2893e2024fabc7ae65ad142" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "oktaId" character varying NOT NULL, "firstName" character varying NOT NULL, "lastName" character varying NOT NULL, "email" character varying NOT NULL, "birthdate" character varying NOT NULL, CONSTRAINT "UQ_361bea4aed142d129c310f21128" UNIQUE ("oktaId"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
       `CREATE TABLE "songs_playlists_playlist" ("songsId" uuid NOT NULL, "playlistId" uuid NOT NULL, CONSTRAINT "PK_2a5002c7005bd7a40db996a2e1f" PRIMARY KEY ("songsId", "playlistId"))`,
     );
     await queryRunner.query(
@@ -47,7 +44,6 @@ export class playlistUserSongConnection1605220279704
     await queryRunner.query(`DROP INDEX "IDX_4e61cb4d41cab285a54a4a7f6e"`);
     await queryRunner.query(`DROP INDEX "IDX_d6641ccd7ddbac66c65034d5d1"`);
     await queryRunner.query(`DROP TABLE "songs_playlists_playlist"`);
-    await queryRunner.query(`DROP TABLE "users"`);
     await queryRunner.query(`DROP TABLE "playlist"`);
     await queryRunner.query(`DROP TABLE "songs"`);
   }

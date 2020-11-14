@@ -1,8 +1,7 @@
-// dto structure from https://slacker.ro/2020/02/26/build-a-secure-nestjs-api-with-postgres/
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export class UserRegisterDto {
+export class AddUserDto {
   @ApiProperty()
   @IsEmail()
   email: string;
@@ -26,6 +25,46 @@ export class UserRegisterDto {
   @ApiProperty()
   @IsNotEmpty()
   username: string;
+}
+export class AddSongDto {
+  @ApiProperty()
+  @IsEmail()
+  name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  url: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  artist: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  playlistId: string;
+
+  @ApiProperty()
+  genre: string;
+
+  @ApiProperty()
+  icon: string;
+
+  @ApiProperty()
+  externalId: string;
+}
+export class AddPlaylistDto {
+  @ApiProperty()
+  @IsEmail()
+  name: string;
+
+  @ApiProperty()
+  genre: string;
+
+  @ApiProperty()
+  icon: string;
+
+  @ApiProperty()
+  userId: string;
 }
 
 export class LoginDto {
