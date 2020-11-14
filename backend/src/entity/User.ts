@@ -30,6 +30,13 @@ export class User {
   @Column()
   birthdate: string;
 
-  @OneToMany(() => Playlist, (playlist) => playlist.user)
+  @ApiProperty()
+  @Column()
+  username: string;
+
+  @OneToMany(
+    () => Playlist,
+    playlist => playlist.user,
+  )
   playlists: Playlist[];
 }

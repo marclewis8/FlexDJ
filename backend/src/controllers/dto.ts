@@ -22,11 +22,15 @@ export class UserRegisterDto {
   @ApiProperty()
   @IsNotEmpty()
   birthday: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  username: string;
 }
 
 export class LoginDto {
   @ApiProperty()
-  email: string;
+  username: string;
 
   @ApiProperty()
   password: string;

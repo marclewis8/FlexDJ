@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import { User } from '../entity';
+import { User, Playlist, Song } from '../entity';
 
 dotenv.config();
 const baseDir = path.join(__dirname, '../../');
@@ -14,7 +14,7 @@ export default {
   logging: true,
   synchronize: false,
   type,
-  entities: [User],
+  entities: [User, Playlist, Song],
   migrations: [baseDir + process.env.TYPEORM_MIGRATIONS],
   migrationsRun: process.env.TYPEORM_MIGRATIONS_RUN === 'true',
   cli: {

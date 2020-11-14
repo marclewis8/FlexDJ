@@ -21,14 +21,13 @@ export class AppController {
     @Body() data: LoginDto,
     @Req() request: Request,
   ): Promise<LoginResponseDto> {
-    const { email, password } = data;
+    const { username, password } = data;
     try {
-      const session = await sessionLogin({ email, password });
+      const session = await sessionLogin({ username, password });
       request.res.cookie('sessionId', session.sessionId);
       return session;
     } catch (e) {
-      console.log('login error', e);
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException(e);
     }
   }
 }

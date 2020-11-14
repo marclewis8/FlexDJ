@@ -3,32 +3,40 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Check,
   ManyToOne,
   ManyToMany,
 } from 'typeorm';
-import { User } from './User';
-import { Song } from './Song';
+import { User, Song } from './';
 
 @Entity()
 export class Playlist {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid', {
     name: 'id',
   })
   id: string;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty()
   @Column()
   genre: string;
 
+  @ApiProperty()
   @Column()
   icon: string; // URL or relative path?
 
-  @ManyToOne(() => User, (user) => user.playlists)
+  @ManyToOne(
+    () => User,
+    user => user.playlists,
+  )
   user: User;
 
-  @ManyToMany(() => Song, (song) => song.playlists)
+  @ManyToMany(
+    () => Song,
+    song => song.playlists,
+  )
   songs: Song[];
 }
