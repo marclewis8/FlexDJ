@@ -25,7 +25,7 @@ function SearchBox() {
   const onFinish = async (values) => {
     let result = await axios({
       method: 'get',
-      url: `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${values.name}&type=video&key=AIzaSyBcWEFvenf9oWCPuhMboUCeCvbt3kPbntU`,
+      url: `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${values.name}&type=video&key=${process.env.youtubeAPIKey}`,
     });
     console.log(result);
     // TODO, actually build search results into visible data
@@ -59,4 +59,9 @@ function SearchBox() {
   );
 }
 
-export default Search;
+// function SearchResults(props) {
+//   // props should contain JSON responses
+// }
+
+// export default Search, SearchResults;
+// export default SearchResults;
