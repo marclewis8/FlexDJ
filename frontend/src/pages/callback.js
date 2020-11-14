@@ -1,118 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import { searchSpotify, searchYT } from './axios.js';
+import { List, Card, Avatar } from 'antd';
+import '../styles/songs.less';
+import Search from 'antd/lib/input/Search';
+import { PlusSquareOutlined } from '@ant-design/icons';
+const { Meta } = Card;
 
 function SpotifyRequests() {
-  const [token, setToken] = useState(null);
-  const location = useRouter();
-  const [url, setUrl] = useState(null);
-  useEffect(() => {
-    setToken(new URLSearchParams(location.pathname).get('#access_token'));
-  }, [location]);
+  const router = useRouter();
+  const token = new URLSearchParams(router.asPath.replace('/callback', '')).get(
+    '#access_token'
+  );
+  const [items, setItems] = useState(null);
 
-  let data = searchTrack('bet on it', token);
-  return <div>{data}</div>;
+  return (
+    <div>
+      <Search
+        onSearch={async (val) => setItems(await onSearch(val, token))}
+      ></Search>
+      {items ? (
+        <div className="songs">
+          <List
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={items}
+            renderItem={(item) => (
+              <Card
+                style={{ width: 300 }}
+                cover={<img alt="thumbnail" src={item.image} />}
+                actions={[<PlusSquareOutlined key="add" />]}
+              >
+                <Meta
+                  avatar={<Avatar src={item.icon} />}
+                  title={item.artist}
+                  description={item.name}
+                />
+              </Card>
+            )}
+          />
+        </div>
+      ) : (
+        <p></p>
+      )}
+    </div>
+  );
 }
 
-function ArtistInfo() {
-  return <button onClick={getPlaylist}></button>;
-}
+const onSearch = async (val, token) => {
+  let result = [];
+  let spot = await searchSpotify(val, token);
+  let yt = await searchYT(val + ' song');
 
-async function getArtist(token) {
-  let res = axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/artists/5CCwRZC6euC8Odo6y9X8jr',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
+  let spotItems = spot.tracks.items;
+  let ytItems = yt.items;
 
-  let data = await res.data;
+  let s = 0;
+  let y = 0;
 
-  return data;
-}
+  for (let i = 0; i < spotItems.length + ytItems.length; i++) {
+    console.log(i);
+    if (i % 2 == 0 && s < spotItems.length) {
+      result.push({
+        name: spotItems[s].name,
+        artist: spotItems[s].artists[0].name,
+        image: spotItems[s].album.images[0].url,
+        icon:
+          'https://www.iconfinder.com/data/icons/popular-services-brands/512/spotify-512.png',
+      });
+      s++;
+    } else {
+      result.push({
+        name: ytItems[y].snippet.title,
+        artist: ytItems[y].snippet.channelTitle,
+        image: ytItems[y].snippet.thumbnails.high.url,
+        icon:
+          'https://i.pinimg.com/originals/31/23/9a/31239a2f70e4f8e4e3263fafb00ace1c.png',
+      });
+      y++;
+    }
+  }
 
-async function getCategories(token) {
-  let res = await axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/browse/categories',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
-
-  let data = await res.data;
-
-  return data;
-}
-
-async function getPlaylist(token) {
-  let res = await axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/me/playlists',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
-
-  let data = await res.data;
-
-  return data;
-}
-
-async function getPlaylistTracks(token) {
-  let res = await axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/playlists/4hLJS87n7SxiTbhq40I1E6/tracks',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
-
-  let data = await res.data;
-
-  return data;
-}
-
-async function searchArtist(artistName, token) {
-  let res = await axios({
-    method: 'get',
-    url: 'https://api.spotify.com/v1/search',
-    params: {
-      q: artistName,
-      type: 'artist',
-    },
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
-
-  let data = await res.data;
-}
-
-function searchTrack(trackName, token) {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    axios({
-      method: 'get',
-      url: 'https://api.spotify.com/v1/search',
-      params: {
-        q: trackName,
-        type: 'track',
-        market: 'US',
-      },
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    }).then((res) => {
-      setData(res.data);
-    });
-  }, [data]);
-
-  console.log(data.tracks.href);
-
-  return data;
-}
+  return result;
+};
 
 export default SpotifyRequests;
