@@ -27,7 +27,7 @@ export class UserController {
     return await this.userRepo.findById(id);
   }
 
-  @Get(':id')
+  @Get(':id/playlists')
   @ApiResponse({ type: Playlist, status: 201, isArray: true })
   async getUserPlaylists(@Param() id: string) {
     return await this.userRepo.findOne(id, { relations: ['playlists'] });

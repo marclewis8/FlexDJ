@@ -73,7 +73,7 @@ export class PlaylistController {
     return await this.playlistRepo.findById(id);
   }
 
-  @Get(':playlistId')
+  @Get(':playlistId/songs')
   @ApiResponse({ type: Song, status: 201 })
   async getSongs(@Param() id: string) {
     let { songs } = await this.playlistRepo.findById(id);
