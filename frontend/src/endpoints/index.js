@@ -35,9 +35,9 @@ export const postUserLogin = (form) => {
     });
 };
 
-export const getUserInfo = (id) => {
+export const getUserInfo = (userId) => {
   return axios
-    .get(`./api/user/${id}`)
+    .get(`./api/user/${userId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -47,9 +47,9 @@ export const getUserInfo = (id) => {
 };
 
 // Get User Playlists
-export const getUserPlaylists = (id) => {
+export const getUserPlaylists = (userId) => {
   return axios
-    .get(`./api/user/${id}/playlists`)
+    .get(`./api/user/${userId}/playlists`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -58,7 +58,7 @@ export const getUserPlaylists = (id) => {
     });
 };
 
-// Add & Remove Songs
+// Add & Remove Songs (form needs: name, url, icon, artist, externalId, playlistId)
 export const addIndividualSong = (form) => {
   return axios
     .post('./api/song/add', form)
@@ -70,9 +70,9 @@ export const addIndividualSong = (form) => {
     });
 };
 
-export const removeIndividualSong = (id) => {
+export const removeIndividualSong = (songId) => {
   return axios
-    .post(`./api/song/remove/${id}`)
+    .post(`./api/song/remove/${songId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -81,9 +81,9 @@ export const removeIndividualSong = (id) => {
     });
 };
 
-export const getIndividualSong = (id) => {
+export const getIndividualSong = (songId) => {
   return axios
-    .get(`./api/song/${id}`, form)
+    .get(`./api/song/${songId}`, form)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -92,7 +92,7 @@ export const getIndividualSong = (id) => {
     });
 };
 
-// Playlist Add & Remove
+// Playlist Add & Remove (form needs: name, genre, icon, userId)
 export const addPlaylist = (form) => {
   return axios
     .post('./api/playlist/add', form)
@@ -104,9 +104,9 @@ export const addPlaylist = (form) => {
     });
 };
 
-export const removePlaylist = (id) => {
+export const removePlaylist = (playlistId) => {
   return axios
-    .post(`./api/playlist/remove/${id}`)
+    .post(`./api/playlist/remove/${playlistId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
