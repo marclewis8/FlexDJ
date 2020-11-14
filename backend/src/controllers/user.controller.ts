@@ -2,33 +2,40 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req,
-  Param,
-  Query,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 
-import { UserRegisterDto } from './dto';
+import { AddUserDto } from './dto';
 import { assertUser } from '../auth/assert-user';
-import { User } from '../entity/User';
+import { User, Playlist } from '../entity';
 import { register, sessionLogin } from '../auth/user-auth';
-import { UserRepository } from '../repos';
+import { UserRepository, PlaylistRepository } from '../repos';
 import { getCustomRepository } from 'typeorm';
 
 @Controller('user')
 export class UserController {
-  @Get('user-count')
-  getUsersCount(): number {
-    return 0;
+  constructor(private userRepo: UserRepository) {}
+
+  @Get(':id')
+  @ApiResponse({ type: User, status: 201 })
+  async getUserInfo(@Param() id: string) {
+    return await this.userRepo.findById(id);
+  }
+
+  @Get(':id/playlists')
+  @ApiResponse({ type: Playlist, status: 201, isArray: true })
+  async getUserPlaylists(@Param() id: string) {
+    return await this.userRepo.findOne(id, { relations: ['playlists'] });
   }
 
   @Post('add-user')
   @ApiResponse({ type: User, status: 201 })
-  @Post()
-  async addUser(@Body() userData: UserRegisterDto, @Req() request: Request) {
+  async addUser(@Body() userData: AddUserDto, @Req() request: Request) {
     const {
       email,
       password,
