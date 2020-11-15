@@ -5,6 +5,7 @@ import { OktaAuthOptions } from '@okta/okta-auth-js';
 import { UserRepository } from '../repos';
 import { getCustomRepository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
+import { response } from 'express';
 const OktaAuth = require('@okta/okta-auth-js');
 
 export interface RegisterData {
@@ -27,6 +28,7 @@ export interface Session {
   sessionId: string;
   userId: string;
   userEmail: string;
+  id: string;
 }
 dotenv.config();
 const { OKTA_DOMAIN, OKTA_APP_TOKEN, OKTA_APP_CLIENT_ID } = process.env;
@@ -66,8 +68,7 @@ export async function sessionLogin(loginData: LoginData): Promise<Session> {
   });
   const session = await oktaClient.createSession({ sessionToken });
   const { login, id, userId } = session;
-
-  return { sessionId: id, userEmail: login, userId };
+  return { sessionId: id, userEmail: login, userId, id: response.id };
 }
 
 export async function getSessionBySessionId(
@@ -76,5 +77,5 @@ export async function getSessionBySessionId(
   const session = await oktaClient.getSession(sessionId);
   const { login, id, userId } = session;
 
-  return { sessionId: id, userEmail: login, userId };
+  return { sessionId: id, userEmail: login, userId, id: null };
 }

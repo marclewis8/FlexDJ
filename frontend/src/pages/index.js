@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Form, Row, Input, Col, Modal } from 'antd';
 import Link from 'next/link';
-
 import { default as SignedIn } from './signed-in';
 import { Footer, Navbar, UserContext } from '../components';
 import { postUserLogin } from '../endpoints';
