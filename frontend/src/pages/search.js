@@ -1,8 +1,6 @@
-import Link from 'next/link';
 import { Form, Input, Button, Checkbox } from 'antd';
 
 const axios = require('axios');
-// https://developers.google.com/youtube/v3/docs/search/list -YT API
 
 function Search() {
   return (
@@ -58,10 +56,3 @@ function SearchBox() {
     </Form>
   );
 }
-
-// function SearchResults(props) {
-//   // props should contain JSON responses
-// }
-
-// export default Search, SearchResults;
-// export default SearchResults;

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { searchSpotify, searchYT } from './axios.js';
 import { List, Card, Avatar } from 'antd';
-import '../styles/songs.less';
 import Search from 'antd/lib/input/Search';
 import { PlusSquareOutlined } from '@ant-design/icons';
+
+import { searchSpotify, searchYoutube } from '../endpoints';
+import '../styles/songs.less';
+
 const { Meta } = Card;
 
 function SpotifyRequests() {
@@ -49,7 +51,7 @@ function SpotifyRequests() {
 const onSearch = async (val, token) => {
   let result = [];
   let spot = await searchSpotify(val, token);
-  let yt = await searchYT(val + ' song');
+  let yt = await searchYoutube(val + ' song');
 
   let spotItems = spot.tracks.items;
   let ytItems = yt.items;
@@ -58,7 +60,6 @@ const onSearch = async (val, token) => {
   let y = 0;
 
   for (let i = 0; i < spotItems.length + ytItems.length; i++) {
-    console.log(i);
     if (i % 2 == 0 && s < spotItems.length) {
       result.push({
         name: spotItems[s].name,

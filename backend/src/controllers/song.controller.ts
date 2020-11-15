@@ -50,20 +50,20 @@ export class SongController {
 
   @Post('remove/:id')
   @ApiResponse({ type: Song, status: 201 })
-  async removeSong(@Param() id: string) {
+  async removeSong(@Param() params) {
     let existingSong = await this.songRepo.findOne({
-      where: { id },
+      where: { id: params.id },
     });
 
     if (!existingSong) {
       throw new NotFoundException('Desired song not found.');
     }
-    return await this.songRepo.delete(id);
+    return await this.songRepo.delete(params.id);
   }
 
   @Get(':id')
   @ApiResponse({ type: Song, status: 201 })
-  async getSong(@Param() id: string) {
-    return await this.songRepo.findById(id);
+  async getSong(@Param() params) {
+    return await this.songRepo.findById(params.id);
   }
 }

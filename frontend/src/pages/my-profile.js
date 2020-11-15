@@ -9,10 +9,15 @@ const { Meta } = Card;
 
 function Profile() {
   const { user } = useContext(UserContext) || {};
+
+  const getUser = async (userid) => {
+    const result = await getUserInfo(user?.id);
+
   console.log(user.id);
 
   const getUser = async (userid) => {
     const result = await getUserInfo(user.userId);
+
     if (result.success) {
       return result.data;
     } else {
@@ -23,18 +28,28 @@ function Profile() {
     }
   };
 
+
+  const userInfo = getUser(user?.id);
+
   const userInfo = getUser(user.id);
+
 
   return (
     <div className="profile">
       <Navbar />
       <div className="content">
         <h1 id="title">FlexDJ</h1>
-        <h2>Welcome, Anna!</h2>
-        <ProfileCard></ProfileCard>
-        <Link href="/">
-          <Button type="primary">Back</Button>
-        </Link>
+        {user ? (
+          <>
+            <h2>Welcome, Anna!</h2>
+            <ProfileCard></ProfileCard>
+            <Link href="/">
+              <Button type="primary">Back</Button>
+            </Link>
+          </>
+        ) : (
+          <h2>No Account Found</h2>
+        )}
       </div>
       <Footer></Footer>
     </div>

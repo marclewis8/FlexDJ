@@ -15,14 +15,7 @@ export const searchSpotify = (trackName, token) => {
   }).then((res) => res.data);
 };
 
-export const searchYT = (trackName) => {
-  return axios({
-    method: 'get',
-    url: `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${trackName}&type=video&key=${process.env.youtubeAPIKey}`,
-  }).then((res) => res.data);
-};
-
-export const getArtist = (token) => {
+export const getSpotifyArtist = (token) => {
   return axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/artists/5CCwRZC6euC8Odo6y9X8jr',
@@ -32,7 +25,7 @@ export const getArtist = (token) => {
   }).then((res) => res.data);
 };
 
-export const getCategories = (token) => {
+export const getSpotifyCategories = (token) => {
   return axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/browse/categories',
@@ -42,7 +35,7 @@ export const getCategories = (token) => {
   }).then((res) => res.data);
 };
 
-export const getPlaylist = (token) => {
+export const getSpotifyPlaylist = (token) => {
   return axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/me/playlists',
@@ -52,7 +45,7 @@ export const getPlaylist = (token) => {
   }).then((res) => res.data);
 };
 
-export const getPlaylistTracks = (token) => {
+export const getSpotifyPlaylistTracks = (token) => {
   return axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/playlists/4hLJS87n7SxiTbhq40I1E6/tracks',
@@ -62,7 +55,7 @@ export const getPlaylistTracks = (token) => {
   }).then((res) => res.data);
 };
 
-export const searchArtist = (artistName, token) => {
+export const searchSpotifyArtist = (artistName, token) => {
   return axios({
     method: 'get',
     url: 'https://api.spotify.com/v1/search',
