@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
-import { Footer, Navbar } from '../components';
-import { Button, Card } from 'antd';
+import { default as SignedIn } from './signed-in';
+import { Footer, Navbar, UserContext } from '../components';
+import { Button, Card, Modal } from 'antd';
+import { getUserInfo } from '../endpoints';
 
 const { Meta } = Card;
 
 function Profile() {
+  const { user } = useContext(UserContext) || {};
+  console.log(user.id);
+
+  const getUser = async (userid) => {
+    const result = await getUserInfo(user.userId);
+    if (result.success) {
+      return result.data;
+    } else {
+      return Modal.error({
+        title: 'Profile Not Found',
+        content: 'Try logging in again.',
+      });
+    }
+  };
+
+  const userInfo = getUser(user.id);
+
   return (
     <div className="profile">
-      <Navbar></Navbar>
+      <Navbar />
       <div className="content">
         <h1 id="title">FlexDJ</h1>
         <h2>Welcome, Anna!</h2>
