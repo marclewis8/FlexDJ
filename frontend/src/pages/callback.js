@@ -60,7 +60,6 @@ const onSearch = async (val, token) => {
   let y = 0;
 
   for (let i = 0; i < spotItems.length + ytItems.length; i++) {
-    console.log(i);
     if (i % 2 == 0 && s < spotItems.length) {
       result.push({
         name: spotItems[s].name,

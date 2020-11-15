@@ -23,14 +23,14 @@ export class UserController {
 
   @Get(':id')
   @ApiResponse({ type: User, status: 201 })
-  async getUserInfo(@Param() id: string) {
-    return await this.userRepo.findById(id);
+  async getUserInfo(@Param() params) {
+    return await this.userRepo.findById(params.id);
   }
 
   @Get(':id/playlists')
   @ApiResponse({ type: Playlist, status: 201, isArray: true })
-  async getUserPlaylists(@Param() id: string) {
-    return await this.userRepo.findOne(id, { relations: ['playlists'] });
+  async getUserPlaylists(@Param() params) {
+    return await this.userRepo.findOne(params.id, { relations: ['playlists'] });
   }
 
   @Post('add-user')

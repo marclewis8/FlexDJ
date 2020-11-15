@@ -7,7 +7,6 @@ const withLess = require('@zeit/next-less');
 const withCSS = require('@zeit/next-css');
 const withPlugins = require('next-compose-plugins');
 
-// Where your antd-custom.less file lives
 const themeVariables = lessToJS(
   fs.readFileSync(
     path.resolve(__dirname, './src/styles/antd-custom.less'),

@@ -6,16 +6,38 @@ import { Button, Card } from 'antd';
 const { Meta } = Card;
 
 function Profile() {
+  const { user } = useContext(UserContext) || {};
+
+  const getUser = async (userid) => {
+    const result = await getUserInfo(user?.id);
+    if (result.success) {
+      return result.data;
+    } else {
+      return Modal.error({
+        title: 'Profile Not Found',
+        content: 'Try logging in again.',
+      });
+    }
+  };
+
+  const userInfo = getUser(user?.id);
+
   return (
     <div className="profile">
       <Navbar></Navbar>
       <div className="content">
         <h1 id="title">FlexDJ</h1>
-        <h2>Welcome, Anna!</h2>
-        <ProfileCard></ProfileCard>
-        <Link href="/">
-          <Button type="primary">Back</Button>
-        </Link>
+        {user ? (
+          <>
+            <h2>Welcome, Anna!</h2>
+            <ProfileCard></ProfileCard>
+            <Link href="/">
+              <Button type="primary">Back</Button>
+            </Link>
+          </>
+        ) : (
+          <h2>No Account Found</h2>
+        )}
       </div>
       <Footer></Footer>
     </div>

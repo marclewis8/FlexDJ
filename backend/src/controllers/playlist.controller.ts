@@ -35,22 +35,22 @@ export class PlaylistController {
 
   @Post('remove/:playlistId')
   @ApiResponse({ type: Song, status: 201 })
-  async removePlaylist(@Param() playlistId: string) {
+  async removePlaylist(@Param() params) {
     let existingPlaylist = await this.playlistRepo.findOne({
-      where: { id: playlistId },
+      where: { id: params.playlistId },
     });
 
     if (!existingPlaylist) {
       throw new NotFoundException('Desired playlist not found.');
     }
-    return await this.playlistRepo.delete(playlistId);
+    return await this.playlistRepo.delete(params.playlistId);
   }
 
   @Post(':playlistId/remove/:songId')
   @ApiResponse({ type: Song, status: 201 })
-  async removeSong(@Param() playlistId: string, songId: string) {
+  async removeSong(@Param() params) {
     let existingSong = await this.songRepo.findOne({
-      where: { id: songId },
+      where: { id: params.songId },
     });
 
     if (!existingSong) {
@@ -58,7 +58,7 @@ export class PlaylistController {
     }
 
     let existingPlaylist = await this.playlistRepo.findOne({
-      where: { playlistId },
+      where: { params.playlistId },
     });
 
     if (!existingPlaylist) {
@@ -69,14 +69,14 @@ export class PlaylistController {
 
   @Get(':playlistId')
   @ApiResponse({ type: Playlist, status: 201 })
-  async getPlaylist(@Param() id: string) {
-    return await this.playlistRepo.findById(id);
+  async getPlaylist(@Param() params) {
+    return await this.playlistRepo.findById(params.id);
   }
 
   @Get(':playlistId/songs')
   @ApiResponse({ type: Song, status: 201 })
-  async getSongs(@Param() id: string) {
-    let { songs } = await this.playlistRepo.findById(id);
+  async getSongs(@Param() params) {
+    let { songs } = await this.playlistRepo.findById(params.id);
     return songs;
   }
 }
