@@ -1,18 +1,91 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Footer, Navbar } from '../components';
-import { Button, List, Card } from 'antd';
-
+import { Footer, Navbar, UserContext } from '../components';
+import { Button, List, Card, Modal, Form, Row, Col, Input } from 'antd';
+import { getUserPlaylists, addPlaylist, removePlaylist } from '../endpoints/';
 import '../styles/playlists.less';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 function Playlists() {
+  const { user } = useContext(UserContext) || {};
+  const [playlists, setPlaylists] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const getPlaylists = async () => {
+      const result = await getUserPlaylists(user?.id);
+      if (result.success) {
+        setPlaylists(result.data.playlists);
+      }
+    };
+    getPlaylists();
+    setUserId(user?.id);
+  });
+
+  function showDeleteConfirm(playlistId) {
+    confirm({
+      title: 'Are you sure you want to delete this playlist?',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        deletePlaylist(playlistId);
+      },
+    });
+  }
+
+  const createPlaylist = () => {
+    return Modal.info({
+      title: 'Input New Playlist Info',
+      content: <AddPlaylistForm uid={userId}></AddPlaylistForm>,
+    });
+  };
+
+  const deletePlaylist = async (playlistId) => {
+    const result = await removePlaylist(playlistId);
+    if (!result.success) {
+      return Modal.error({
+        title: 'Playlist Deletion Failed',
+        content: result.message,
+      });
+    }
+  };
+
   return (
     <div className="playlists">
       <Navbar />
       <div className="content">
         <h1 id="title">FlexDJ</h1>
         <h2>Your Playlists</h2>
-        <PlaylistsView></PlaylistsView>
+        <Button onClick={createPlaylist} type="primary">
+          Add
+        </Button>
+        {playlists?.length > 0 ? (
+          <>
+            <List
+              dataSource={playlists}
+              renderItem={(item) => (
+                <List.Item key={item.id}>
+                  <Card
+                    title={item.name}
+                    extra={[
+                      <a href="indv-playlist"> View </a>,
+                      <a onClick={() => showDeleteConfirm(item.id)}> Delete</a>,
+                    ]}
+                    key={item.id}
+                  >
+                    Genre: {item.genre}
+                  </Card>
+                </List.Item>
+              )}
+            />
+          </>
+        ) : (
+          <h2>No Playlists Found - Create One!</h2>
+        )}
         <Link href="/">
           <Button type="primary">Back</Button>
         </Link>
@@ -22,55 +95,111 @@ function Playlists() {
   );
 }
 
-const data = [
-  {
-    title: 'party time',
-    songs: '10 songs',
-  },
-  {
-    title: 'study grind',
-    songs: '6 songs',
-  },
-  {
-    title: 'sad boi',
-    songs: '22 songs',
-  },
-  {
-    title: 'workout',
-    songs: '18 songs',
-  },
-  {
-    title: 'fun times',
-    songs: '10 songs',
-  },
-  {
-    title: 'walking tunes',
-    songs: '12 songs',
-  },
-  {
-    title: 'throwback',
-    songs: '67 songs',
-  },
-  {
-    title: 'dance',
-    songs: '7 songs',
-  },
-];
+function AddPlaylistForm(props) {
+  const onFinish = async (values) => {
+    values['icon'] =
+      'https://www.iconfinder.com/data/icons/popular-services-brands/512/spotify-512.png';
+    values['userId'] = props.uid;
+    const result = await addPlaylist(values);
+    if (result.success) {
+      return Modal.success({
+        title: 'Playlist Created Successfully!',
+        content: result.message,
+      });
+    } else {
+      return Modal.error({
+        title: 'Playlist Creation Failed',
+        content: result.message,
+      });
+    }
+  };
 
-function PlaylistsView() {
   return (
-    <List
-      grid={{ gutter: 16, column: 4 }}
-      dataSource={data}
-      renderItem={(item) => (
-        <List.Item>
-          <Card title={item.title} extra={[<a href="indv-playlist">View </a>]}>
-            {item.songs}
-          </Card>
-        </List.Item>
-      )}
-    />
+    <div className="addplaylist">
+      <Form name="basic" initialValues={{ remember: true }} onFinish={onFinish}>
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your new playlist name!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Genre"
+              name="genre"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your new playlist genre!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </div>
   );
 }
+
+/*
+const data = [
+  {
+    name: 'party time',
+    id: 1,
+    genre: 'pop',
+  },
+  {
+    name: 'study grind',
+    id: 2,
+    genre: 'pop',
+  },
+  {
+    name: 'sad boi',
+    id: 3,
+    genre: 'alternative',
+  },
+  {
+    name: 'workout',
+    id: 4,
+    genre: 'rock',
+  },
+  {
+    name: 'fun times',
+    id: 5,
+    genre: 'rock',
+  },
+  {
+    name: 'walking tunes',
+    id: 6,
+    genre: 'rock',
+  },
+  {
+    name: 'throwback',
+    id: 7,
+    genre: 'rock',
+  },
+  {
+    name: 'dance',
+    id: 8,
+    genre: 'rock',
+  },
+];
+*/
 
 export default Playlists;
