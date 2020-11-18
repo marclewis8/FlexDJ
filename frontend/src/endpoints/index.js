@@ -6,7 +6,7 @@ export {
   getSpotifyPlaylistTracks,
   searchSpotifyArtist,
 } from './spotify';
-export { searchYoutbe } from './youtube';
+export { searchYoutube } from './youtube';
 export {
   postUserLogin,
   postUserSignUp,

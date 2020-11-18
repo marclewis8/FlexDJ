@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { List, Card, Avatar } from 'antd';
+import { List, Card, Avatar, Button, Modal } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { PlusSquareOutlined } from '@ant-design/icons';
-
-import { searchSpotify, searchYoutube } from '../endpoints';
+import { Footer, Navbar, UserContext } from '../components';
+import { searchSpotify, searchYoutube, getUserPlaylists } from '../endpoints';
 import '../styles/songs.less';
+import Link from 'next/link';
 
 const { Meta } = Card;
 
@@ -15,9 +16,35 @@ function SpotifyRequests() {
     '#access_token'
   );
   const [items, setItems] = useState(null);
+  const [playlists, setPlaylists] = useState(null);
+
+  const { user } = useContext(UserContext) || {};
+
+  useEffect(() => {
+    const getPlaylists = async () => {
+      const result = await getUserPlaylists(
+        'bd09aac4-193b-482d-b9d4-39d2c3b170a2'
+      );
+      if (result.success) {
+        setPlaylists(result.data);
+      }
+    };
+    getPlaylists();
+  });
+
+  const playlistCards = <Card>[Insert Playlist Cards Here]</Card>;
+
+  const addSong = () => {
+    console.log(playlists);
+    return Modal.info({
+      title: 'Select Playlist to Add Song',
+      content: playlistCards,
+    });
+  };
 
   return (
     <div>
+      <Navbar></Navbar>
       <Search
         onSearch={async (val) => setItems(await onSearch(val, token))}
       ></Search>
@@ -30,7 +57,7 @@ function SpotifyRequests() {
               <Card
                 style={{ width: 300 }}
                 cover={<img alt="thumbnail" src={item.image} />}
-                actions={[<PlusSquareOutlined key="add" />]}
+                actions={[<PlusSquareOutlined onClick={addSong} key="add" />]}
               >
                 <Meta
                   avatar={<Avatar src={item.icon} />}
@@ -44,6 +71,10 @@ function SpotifyRequests() {
       ) : (
         <p></p>
       )}
+      <Link href="/">
+        <Button type="primary">Back to Home</Button>
+      </Link>
+      <Footer></Footer>
     </div>
   );
 }
