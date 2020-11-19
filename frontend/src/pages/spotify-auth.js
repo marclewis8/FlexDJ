@@ -6,7 +6,7 @@ function SpotifyLaunch() {
   return (
     <div>
       <SpotifyAuth
-        redirectUri="http://localhost:3000/callback"
+        redirectUri="http://localhost:3000/search"
         clientID={process.env.spotifyClientID}
         scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
       />

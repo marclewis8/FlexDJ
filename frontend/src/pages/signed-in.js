@@ -11,7 +11,7 @@ function SignedIn() {
       <div>
         <SearchBox />
       </div>
-      <Link href="./platapi">
+      <Link href="./spotify-auth">
         <button type="submit">Spotify</button>
       </Link>
     </div>
