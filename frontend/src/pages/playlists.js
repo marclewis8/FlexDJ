@@ -70,6 +70,7 @@ function Playlists() {
               renderItem={(item) => (
                 <List.Item key={item.id}>
                   <Card
+                    className="playlist-card"
                     title={item.name}
                     extra={[
                       <a href="indv-playlist"> View </a>,
@@ -156,50 +157,5 @@ function AddPlaylistForm(props) {
     </div>
   );
 }
-
-/*
-const data = [
-  {
-    name: 'party time',
-    id: 1,
-    genre: 'pop',
-  },
-  {
-    name: 'study grind',
-    id: 2,
-    genre: 'pop',
-  },
-  {
-    name: 'sad boi',
-    id: 3,
-    genre: 'alternative',
-  },
-  {
-    name: 'workout',
-    id: 4,
-    genre: 'rock',
-  },
-  {
-    name: 'fun times',
-    id: 5,
-    genre: 'rock',
-  },
-  {
-    name: 'walking tunes',
-    id: 6,
-    genre: 'rock',
-  },
-  {
-    name: 'throwback',
-    id: 7,
-    genre: 'rock',
-  },
-  {
-    name: 'dance',
-    id: 8,
-    genre: 'rock',
-  },
-];
-*/
 
 export default Playlists;

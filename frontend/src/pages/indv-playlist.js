@@ -18,7 +18,9 @@ function Playlist() {
         </div>
         <PlaylistList></PlaylistList>
         <Link href="playlists">
-          <Button type="primary">Back</Button>
+          <Button type="primary" className="playlist-back">
+            Back
+          </Button>
         </Link>
       </div>
       <Footer></Footer>
