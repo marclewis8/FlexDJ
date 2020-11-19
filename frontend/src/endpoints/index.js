@@ -12,6 +12,7 @@ export {
   postUserSignUp,
   addPlaylist,
   getIndividualSong,
+  addIndividualSong,
   getPlaylist,
   getPlaylistSongs,
   getUserInfo,

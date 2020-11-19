@@ -5,7 +5,7 @@ import { Button, List, Card } from 'antd';
 
 import '../styles/indv-playlist.less';
 
-function Playlist() {
+function Playlist(props) {
   return (
     <div className="playlist">
       <Navbar />
