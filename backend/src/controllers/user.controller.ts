@@ -30,6 +30,7 @@ export class UserController {
   @Get(':id/playlists')
   @ApiResponse({ type: Playlist, status: 201, isArray: true })
   async getUserPlaylists(@Param() params) {
+    console.log('api ' + params);
     return await this.userRepo.findOne(params.id, { relations: ['playlists'] });
   }
 

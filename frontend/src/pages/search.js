@@ -4,7 +4,12 @@ import { List, Card, Avatar, Button, Modal } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Footer, Navbar, UserContext } from '../components';
-import { searchSpotify, searchYoutube, getUserPlaylists } from '../endpoints';
+import {
+  searchSpotify,
+  searchYoutube,
+  getUserPlaylists,
+  addIndividualSong,
+} from '../endpoints';
 import '../styles/songs.less';
 import Link from 'next/link';
 
@@ -12,7 +17,7 @@ const { Meta } = Card;
 
 function SpotifyRequests() {
   const router = useRouter();
-  const token = new URLSearchParams(router.asPath.replace('/search', '')).get(
+  const token = new URLSearchParams(router.asPath.replace('/callback', '')).get(
     '#access_token'
   );
   const [items, setItems] = useState(null);
@@ -22,23 +27,67 @@ function SpotifyRequests() {
 
   useEffect(() => {
     const getPlaylists = async () => {
-      const result = await getUserPlaylists(
-        'bd09aac4-193b-482d-b9d4-39d2c3b170a2'
-      );
+      const result = await getUserPlaylists(user?.id); //TO DO - unhardcode this value once user login cookies are figured out
       if (result.success) {
-        setPlaylists(result.data);
+        setPlaylists(result.data.playlists);
       }
     };
     getPlaylists();
-  });
+  }, []);
 
-  const playlistCards = <Card>[Insert Playlist Cards Here]</Card>;
+  // Add & Remove Songs (form needs: name, url, icon, artist, externalId, playlistId)
+  const addSongtoPlaylist = async (playlist, song) => {
+    let form = {};
+    form['name'] = song.name;
+    form['url'] = song.url;
+    form['icon'] = song.icon;
+    form['artist'] = song.artist;
+    form['externalId'] = song.externalId;
+    form['playlistId'] = playlist.id;
+    console.log(form);
 
-  const addSong = () => {
-    console.log(playlists);
+    const result = await addIndividualSong(form);
+    if (result.success) {
+      return Modal.success({
+        title: 'Song Added to ' + playlist.name + ' Successfully!',
+        content: result.message,
+      });
+    } else {
+      return Modal.error({
+        title: 'Failed to Add Song to ' + playlist.name,
+        content: result.message,
+      });
+    }
+  };
+
+  function AddPlaylistCards(props) {
+    return (
+      <List
+        itemLayout="horizontal"
+        dataSource={playlists}
+        renderItem={(item) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={
+                <Avatar src="https://www.flaticon.com/svg/static/icons/svg/1051/1051994.svg" />
+              }
+              title={
+                <a onClick={() => addSongtoPlaylist(item, props.song)}>
+                  {item.name}
+                </a>
+              }
+              description={item.genre}
+            />
+          </List.Item>
+        )}
+      />
+    );
+  }
+
+  const addSong = (song) => {
     return Modal.info({
-      title: 'Select Playlist to Add Song',
-      content: playlistCards,
+      title: 'Add Song to:',
+      content: <AddPlaylistCards song={song}></AddPlaylistCards>,
     });
   };
 
@@ -57,7 +106,12 @@ function SpotifyRequests() {
               <Card
                 style={{ width: 300 }}
                 cover={<img alt="thumbnail" src={item.image} />}
-                actions={[<PlusSquareOutlined onClick={addSong} key="add" />]}
+                actions={[
+                  <PlusSquareOutlined
+                    onClick={() => addSong(item)}
+                    key="add"
+                  />,
+                ]}
               >
                 <Meta
                   avatar={<Avatar src={item.icon} />}
@@ -83,7 +137,6 @@ const onSearch = async (val, token) => {
   let result = [];
   let spot = await searchSpotify(val, token);
   let yt = await searchYoutube(val + ' song');
-
   let spotItems = spot.tracks.items;
   let ytItems = yt.items;
 
@@ -98,6 +151,8 @@ const onSearch = async (val, token) => {
         image: spotItems[s].album.images[0].url,
         icon:
           'https://www.iconfinder.com/data/icons/popular-services-brands/512/spotify-512.png',
+        url: spotItems[s].artists[0].href,
+        externalId: spotItems[s].artists[0].id,
       });
       s++;
     } else {
@@ -107,11 +162,12 @@ const onSearch = async (val, token) => {
         image: ytItems[y].snippet.thumbnails.high.url,
         icon:
           'https://i.pinimg.com/originals/31/23/9a/31239a2f70e4f8e4e3263fafb00ace1c.png',
+        url: 'https://www.youtube.com/watch?v=' + ytItems[y].id.videoId,
+        externalId: ytItems[y].id.videoId,
       });
       y++;
     }
   }
-
   return result;
 };
 

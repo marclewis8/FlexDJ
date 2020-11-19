@@ -38,7 +38,7 @@ export class SongController {
       );
     }
     let existingPlaylist = await this.playlistRepo.findOne({
-      where: { playlistId },
+      where: { id: playlistId },
     });
 
     if (!existingPlaylist) {
