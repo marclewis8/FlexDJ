@@ -70,6 +70,7 @@ function Playlists() {
               renderItem={(item) => (
                 <List.Item key={item.id}>
                   <Card
+                    className="playlist-card"
                     title={item.name}
                     extra={[
                       <a href="indv-playlist"> View </a>,
