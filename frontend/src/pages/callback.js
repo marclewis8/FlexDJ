@@ -12,6 +12,7 @@ import {
 } from '../endpoints';
 import '../styles/songs.less';
 import Link from 'next/link';
+import _ from 'lodash';
 
 const { Meta } = Card;
 
@@ -89,12 +90,15 @@ function SpotifyRequests() {
     });
   };
 
+  const onSearch = _.debounce(
+    async (val) => setItems(await search(val, token)),
+    2000
+  );
+
   return (
     <div>
       <Navbar></Navbar>
-      <Search
-        onSearch={async (val) => setItems(await onSearch(val, token))}
-      ></Search>
+      <Search onSearch={onSearch}></Search>
       {items ? (
         <div className="songs">
           <List
@@ -131,7 +135,7 @@ function SpotifyRequests() {
   );
 }
 
-const onSearch = async (val, token) => {
+const search = async (val, token) => {
   let result = [];
   let spot = await searchSpotify(val, token);
   let yt = await searchYoutube(val + ' song');
