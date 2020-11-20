@@ -5,7 +5,6 @@ import { Button, List, Card, Modal, Form, Row, Col, Input } from 'antd';
 import { getUserPlaylists, addPlaylist, removePlaylist } from '../endpoints/';
 import '../styles/playlists.less';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import Playlist from './indv-playlist';
 
 const { confirm } = Modal;
 
@@ -74,7 +73,7 @@ function Playlists() {
                     className="playlist-card"
                     title={item.name}
                     extra={[
-                      <a>View</a>,
+                      <Link href="indv-playlist">View</Link>,
                       <a onClick={() => showDeleteConfirm(item.id)}> Delete</a>,
                     ]}
                     key={item.id}
