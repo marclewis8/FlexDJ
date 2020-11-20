@@ -5,19 +5,19 @@ import { Button, List, Card } from 'antd';
 
 import '../styles/indv-playlist.less';
 
-function Playlist(props) {
+function Playlist() {
   return (
     <div className="playlist">
       <Navbar />
       <div className="content">
         <h1 id="title">FlexDJ</h1>
-        <h2>Playlist Title</h2>
+        <h2>Title</h2>
         <div style={{ flexDirection: 'row' }}>
           <Button type="primary">Edit</Button>
           <Button type="primary">Play</Button>
         </div>
         <PlaylistList></PlaylistList>
-        <Link href="playlists">
+        <Link href="/playlists">
           <Button type="primary" className="playlist-back">
             Back
           </Button>

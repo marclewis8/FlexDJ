@@ -22,18 +22,17 @@ function SpotifyRequests() {
   );
   const [items, setItems] = useState(null);
   const [playlists, setPlaylists] = useState(null);
-
   const { user } = useContext(UserContext) || {};
 
   useEffect(() => {
     const getPlaylists = async () => {
-      const result = await getUserPlaylists(user?.id); //TO DO - unhardcode this value once user login cookies are figured out
+      const result = await getUserPlaylists(user?.id);
       if (result.success) {
         setPlaylists(result.data.playlists);
       }
     };
     getPlaylists();
-  }, []);
+  }, [user]);
 
   // Add & Remove Songs (form needs: name, url, icon, artist, externalId, playlistId)
   const addSongtoPlaylist = async (playlist, song) => {
@@ -44,7 +43,6 @@ function SpotifyRequests() {
     form['artist'] = song.artist;
     form['externalId'] = song.externalId;
     form['playlistId'] = playlist.id;
-    console.log(form);
 
     const result = await addIndividualSong(form);
     if (result.success) {
