@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { List, Card, Avatar, Button, Modal } from 'antd';
+import { List, Card, Avatar, Button, Modal, AutoComplete } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Footer, Navbar, UserContext } from '../components';
@@ -14,6 +14,7 @@ import '../styles/songs.less';
 import Link from 'next/link';
 import _ from 'lodash';
 
+const { Option } = AutoComplete;
 const { Meta } = Card;
 
 function SpotifyRequests() {
@@ -95,10 +96,33 @@ function SpotifyRequests() {
     2000
   );
 
+  let dummySongNames = [
+    'WAP',
+    'Take Care',
+    'Panda',
+    'Starboy',
+    'Big Sean',
+    'Circles',
+    'Dubstep',
+    'SOS',
+    'Burnin Up',
+  ];
+  dummySongNames = dummySongNames.map((song) => {
+    return { label: song, value: song };
+  });
+  let [options, setOptions] = useState([]);
+  const changeOptions = (value) => {
+    let res = dummySongNames
+      .filter((song) => song.label.substr(0, value.length) === value)
+      .slice(0, 3);
+    setOptions(res);
+  };
   return (
     <div>
       <Navbar></Navbar>
-      <Search onSearch={onSearch}></Search>
+      <AutoComplete onSearch={changeOptions} options={options}>
+        <Search onSearch={onSearch} />
+      </AutoComplete>
       {items ? (
         <div className="songs">
           <List
