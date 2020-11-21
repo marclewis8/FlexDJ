@@ -162,20 +162,24 @@ function SpotifyRequests() {
 
 const search = async (val, spotifyToken, deezerToken) => {
   let result = [];
-  let spot = await searchSpotify(val, spotifyToken);
+
+  let spot = spotifyToken ? await searchSpotify(val, spotifyToken) : null;
   let yt = await searchYoutube(val + ' song');
-  let deez = await searchDeezer(val, deezerToken);
-  let spotItems = spot.tracks.items;
+  let deez =
+    deezerToken && deezerToken !== 'undefined'
+      ? await searchDeezer(val, deezerToken)
+      : null;
+
+  let spotItems = spot ? spot.tracks.items : [];
   let ytItems = yt.items;
-  let deezItems = deez.data;
-  console.log(deezItems);
+  let deezItems = deez ? deez.data : [];
 
   let s = 0;
   let y = 0;
   let d = 0;
-  let sDone = false;
+  let sDone = spotItems.length > 0 ? false : true;
   let yDone = false;
-  let dDone = false;
+  let dDone = deezItems.length > 0 ? false : true;
 
   for (
     let i = 0;
@@ -194,7 +198,7 @@ const search = async (val, spotifyToken, deezerToken) => {
       });
       s++;
       if (s == 20) sDone = true;
-    } else if (i % 3 == 1 && !yDone) {
+    } else if ((i % 3 == 1 && !yDone) || (sDone && dDone && !yDone)) {
       result.push({
         name: ytItems[y].snippet.title,
         artist: ytItems[y].snippet.channelTitle,
@@ -217,6 +221,8 @@ const search = async (val, spotifyToken, deezerToken) => {
       });
       d++;
       if (d == 25) dDone = true;
+    } else if (dDone && sDone && yDone) {
+      break;
     }
   }
   return result;
