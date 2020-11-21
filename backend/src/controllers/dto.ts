@@ -50,6 +50,12 @@ export class AddSongDto {
   icon: string;
 
   @ApiProperty()
+  image: string;
+
+  @ApiProperty()
+  preview: string;
+
+  @ApiProperty()
   externalId: string;
 }
 export class AddPlaylistDto {

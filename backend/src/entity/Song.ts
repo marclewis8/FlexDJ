@@ -30,11 +30,19 @@ export class Song {
 
   @ApiProperty()
   @Column()
-  icon: string; // URL to image
+  icon: string; // URL to platform icon
 
   @ApiProperty()
   @Column()
   url: string;
+
+  @ApiProperty()
+  @Column()
+  image: string; // URL to image
+
+  @ApiProperty()
+  @Column()
+  preview: string; // URL to preview mp3
 
   @ManyToMany(() => Playlist, (playlist) => playlist.songs)
   @JoinTable()

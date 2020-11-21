@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactPlayer from 'react-player/youtube';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Footer, Navbar } from '../components';
 import { Button, List, Card } from 'antd';
-
+import { getPlaylistSongs } from '../endpoints/';
+import ReactAudioPlayer from 'react-audio-player';
 import '../styles/indv-playlist.less';
 
 function Playlist() {
@@ -30,32 +33,39 @@ function Playlist() {
 
 const data = [
   {
-    title: 'Song 1',
-    time: '5:07',
+    platform: 'Deezer',
+    title: 'Freaking Me Out',
+    url:
+      'https://cdns-preview-6.dzcdn.net/stream/c-63008283820619d243fa84498f991860-6.mp3',
   },
   {
-    title: 'Song 2',
-    time: '3:23',
+    platform: 'YouTube',
+    title: 'Bet on It',
+    url: 'https://www.youtube.com/watch?v=k-t4vqd534Y',
   },
   {
-    title: 'Song 3',
-    time: '4:47',
-  },
-  {
-    title: 'Song 4',
-    time: '4:01',
-  },
-  {
-    title: 'Song 5',
-    time: '4:01',
-  },
-  {
-    title: 'Song 6',
-    time: '4:01',
+    platform: 'Spotify',
+    title: 'Panda',
+    url:
+      'https://p.scdn.co/mp3-preview/f1dd31865324f13731030330509046cfdcb3ef62?cid=27680975a57143ea91ad59b76071e135',
   },
 ];
 
 function PlaylistList() {
+  const router = useRouter();
+  const [playlistId, setId] = useState(router.query.id);
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    async function loadSongs() {
+      console.log(playlistId);
+      let res = await getPlaylistSongs(playlistId);
+      console.log(res);
+      setSongs(res.data);
+    }
+    loadSongs();
+  }, []);
+
   return (
     <div className="demo-infinite-container">
       <Card size="large">
@@ -65,7 +75,17 @@ function PlaylistList() {
           dataSource={data}
           renderItem={(item) => (
             <List.Item>
-              <strong>{item.title}</strong> {item.time}
+              <strong>{item.title}</strong>
+              {item.platform == 'YouTube' ? (
+                <ReactPlayer url={item.url} />
+              ) : (
+                <br></br>
+              )}
+              {item.platform == 'Deezer' || item.platform == 'Spotify' ? (
+                <ReactAudioPlayer src={item.url} controls playsinline />
+              ) : (
+                <br></br>
+              )}
             </List.Item>
           )}
         />

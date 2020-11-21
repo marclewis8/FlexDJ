@@ -25,6 +25,8 @@ export class SongRepository extends Repository<Song> {
     externalId: string,
     name: string,
     url: string,
+    image: string,
+    preview: string,
   ) {
     const song = new Song();
     song.artist = artist;
@@ -32,6 +34,8 @@ export class SongRepository extends Repository<Song> {
     song.externalId = externalId;
     song.name = name;
     song.url = url;
+    song.image = image;
+    song.preview = preview;
     await this.manager.save(song);
     return song;
   }

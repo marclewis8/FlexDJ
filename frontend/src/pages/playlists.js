@@ -22,7 +22,7 @@ function Playlists() {
     };
     getPlaylists();
     setUserId(user?.id);
-  }, []);
+  }, [user]);
 
   function showDeleteConfirm(playlistId) {
     confirm({
@@ -73,7 +73,14 @@ function Playlists() {
                     className="playlist-card"
                     title={item.name}
                     extra={[
-                      <Link href="indv-playlist">View</Link>,
+                      <Link
+                        href={{
+                          pathname: '/indv-playlist',
+                          query: { id: item.id },
+                        }}
+                      >
+                        View
+                      </Link>,
                       <a onClick={() => showDeleteConfirm(item.id)}> Delete</a>,
                     ]}
                     key={item.id}

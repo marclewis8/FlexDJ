@@ -22,7 +22,16 @@ export class SongController {
   @Post('add')
   @ApiResponse({ type: Song, status: 201 })
   async addSong(@Body() songData: AddSongDto) {
-    const { name, url, icon, artist, externalId, playlistId } = songData;
+    const {
+      name,
+      url,
+      icon,
+      artist,
+      externalId,
+      image,
+      preview,
+      playlistId,
+    } = songData;
 
     let existingSong = await this.songRepo.findOne({
       where: { url },
@@ -35,6 +44,8 @@ export class SongController {
         externalId,
         name,
         url,
+        image,
+        preview,
       );
     }
     let existingPlaylist = await this.playlistRepo.findOne({
