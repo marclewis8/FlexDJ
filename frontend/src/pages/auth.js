@@ -16,6 +16,11 @@ function SpotifyLaunch() {
     deezerToken = null;
   }
 
+  if (deezerToken == 'undefined') {
+    destroyCookie(null, 'deezerAuthToken');
+    deezerToken = null;
+  }
+
   return spotifyToken ? (
     deezerToken ? (
       <div>
@@ -51,7 +56,18 @@ function SpotifyLaunch() {
         clientID={process.env.spotifyClientID}
         scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
       />
-      <Button>Authenticate with Deezer</Button>
+      <Button
+        onClick={async (e) => {
+          let headers = await deezerAuth();
+          router.push(headers['x-final-url']);
+          let res = await fetchDeezerToken(router.query.code);
+          setCookie(null, 'deezerAuthToken', res.access_token, {
+            maxAge: 60 * 60 * 1000,
+          });
+        }}
+      >
+        Authenticate with Deezer
+      </Button>
     </div>
   );
 }
