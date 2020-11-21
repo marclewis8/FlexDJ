@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import { useRouter } from 'next/router';
-import { setCookie, parseCookies } from 'nookies';
+import { setCookie, parseCookies, destroyCookie } from 'nookies';
 import { Button } from 'antd';
 import { deezerAuth, fetchDeezerToken } from '../endpoints';
+import _ from 'lodash';
 
 function SpotifyLaunch() {
   const spotifyToken = parseCookies().spotifyAuthToken;
   const deezerToken = parseCookies().deezerAuthToken;
   const router = useRouter();
+  if (deezerToken == 'undefined') {
+    destroyCookie(null, 'deezerAuthToken');
+    deezerToken = null;
+  }
 
   return spotifyToken ? (
     deezerToken ? (
