@@ -7,21 +7,22 @@ import { Footer, Navbar, UserContext } from '../components';
 import {
   searchSpotify,
   searchYoutube,
+  searchDeezer,
   getUserPlaylists,
   addIndividualSong,
 } from '../endpoints';
 import '../styles/songs.less';
 import Link from 'next/link';
 import _ from 'lodash';
+import { parseCookies } from 'nookies';
 
 const { Option } = AutoComplete;
 const { Meta } = Card;
 
 function SpotifyRequests() {
   const router = useRouter();
-  const token = new URLSearchParams(router.asPath.replace('/callback', '')).get(
-    '#access_token'
-  );
+  const spotifyToken = parseCookies().spotifyAuthToken;
+  const deezerToken = parseCookies().deezerAuthToken;
   const [items, setItems] = useState(null);
   const [playlists, setPlaylists] = useState(null);
   const { user } = useContext(UserContext) || {};
@@ -92,7 +93,7 @@ function SpotifyRequests() {
   };
 
   const onSearch = _.debounce(
-    async (val) => setItems(await search(val, token)),
+    async (val) => setItems(await search(val, spotifyToken, deezerToken)),
     2000
   );
 
@@ -159,18 +160,29 @@ function SpotifyRequests() {
   );
 }
 
-const search = async (val, token) => {
+const search = async (val, spotifyToken, deezerToken) => {
   let result = [];
-  let spot = await searchSpotify(val, token);
+  let spot = await searchSpotify(val, spotifyToken);
   let yt = await searchYoutube(val + ' song');
+  let deez = await searchDeezer(val, deezerToken);
   let spotItems = spot.tracks.items;
   let ytItems = yt.items;
+  let deezItems = deez.data;
+  console.log(deezItems);
 
   let s = 0;
   let y = 0;
+  let d = 0;
+  let sDone = false;
+  let yDone = false;
+  let dDone = false;
 
-  for (let i = 0; i < spotItems.length + ytItems.length; i++) {
-    if (i % 2 == 0 && s < spotItems.length) {
+  for (
+    let i = 0;
+    i < spotItems.length + ytItems.length + deezItems.length;
+    i++
+  ) {
+    if (i % 3 == 0 && !sDone) {
       result.push({
         name: spotItems[s].name,
         artist: spotItems[s].artists[0].name,
@@ -181,7 +193,8 @@ const search = async (val, token) => {
         externalId: spotItems[s].artists[0].id,
       });
       s++;
-    } else {
+      if (s == 20) sDone = true;
+    } else if (i % 3 == 1 && !yDone) {
       result.push({
         name: ytItems[y].snippet.title,
         artist: ytItems[y].snippet.channelTitle,
@@ -192,6 +205,18 @@ const search = async (val, token) => {
         externalId: ytItems[y].id.videoId,
       });
       y++;
+      if (y == 25) yDone = true;
+    } else if (!dDone) {
+      console.log(d);
+      result.push({
+        name: deezItems[d].title,
+        artist: deezItems[d].artist.name,
+        image: deezItems[d].album.cover_xl,
+        icon:
+          'https://images-eu.ssl-images-amazon.com/images/I/51lo-v-XHZL.png',
+      });
+      d++;
+      if (d == 25) dDone = true;
     }
   }
   return result;
