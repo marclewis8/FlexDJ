@@ -7,6 +7,7 @@ export {
   searchSpotifyArtist,
 } from './spotify';
 export { searchYoutube } from './youtube';
+export { deezerAuth, fetchDeezerToken, searchDeezer } from './deezer';
 export {
   postUserLogin,
   postUserSignUp,

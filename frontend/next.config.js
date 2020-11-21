@@ -20,6 +20,8 @@ const nextConfig = {
     accessTokenDelivery: process.env.accessTokenDelivery,
     spotifyClientID: process.env.spotifyClientID,
     youtubeAPIKey: process.env.youtubeAPIKey,
+    deezerAppID: process.env.deezerAppID,
+    deezerSecret: process.env.deezerSecret,
   },
   distDir: '.next',
 };
