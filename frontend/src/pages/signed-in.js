@@ -11,8 +11,8 @@ function SignedIn() {
       <div>
         <SearchBox />
       </div>
-      <Link href="./spotify-auth">
-        <button type="submit">Spotify</button>
+      <Link href="./auth">
+        <button type="submit">Authenticate</button>
       </Link>
     </div>
   );
