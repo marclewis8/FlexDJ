@@ -39,15 +39,7 @@ function SpotifyRequests() {
 
   // Add & Remove Songs (form needs: name, url, icon, artist, externalId, playlistId)
   const addSongtoPlaylist = async (playlist, song) => {
-    let form = {};
-    form['name'] = song.name;
-    form['url'] = song.url;
-    form['icon'] = song.icon;
-    form['artist'] = song.artist;
-    form['externalId'] = song.externalId;
-    form['image'] = song.image;
-    form['preview'] = song.preview;
-    form['playlistId'] = playlist.id;
+    const form = { ...song, playlistId: playlist.id };
 
     const result = await addIndividualSong(form);
     if (result.success) {
@@ -197,7 +189,7 @@ const search = async (val, spotifyToken, deezerToken) => {
           'https://www.iconfinder.com/data/icons/popular-services-brands/512/spotify-512.png',
         url: spotItems[s].external_urls.spotify,
         externalId: spotItems[s].id,
-        preview: spotItems[s].preview_url,
+        preview: spotItems[s].preview_url || '',
       });
       s++;
       if (s == 20) sDone = true;
@@ -210,7 +202,7 @@ const search = async (val, spotifyToken, deezerToken) => {
           'https://i.pinimg.com/originals/31/23/9a/31239a2f70e4f8e4e3263fafb00ace1c.png',
         url: 'https://www.youtube.com/watch?v=' + ytItems[y].id.videoId,
         externalId: ytItems[y].id.videoId,
-        preview: null,
+        preview: '',
       });
       y++;
       if (y == 25) yDone = true;
@@ -223,7 +215,7 @@ const search = async (val, spotifyToken, deezerToken) => {
           'https://images-eu.ssl-images-amazon.com/images/I/51lo-v-XHZL.png',
         url: deezItems[d].link,
         externalId: deezItems[d].id,
-        preview: deezItems[d].preview,
+        preview: deezItems[d].preview || '',
       });
       d++;
       if (d == 25) dDone = true;

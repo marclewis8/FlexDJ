@@ -29,6 +29,9 @@ function NavBar() {
               <Menu.Item key="playlists">
                 <Link href="/playlists">My Playlists</Link>
               </Menu.Item>
+              <Menu.Item key="search">
+                <Link href="/search">Search</Link>
+              </Menu.Item>
             </>
           )}
 
