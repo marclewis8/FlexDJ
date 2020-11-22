@@ -103,7 +103,16 @@ let billboardHot100Songs = [
   'You Belong With Me - Taylor Swift',
   'Love Story - Taylor Swift',
 ];
-
-export default billboardHot100Songs.map((song) => {
+billboardHot100Songs = billboardHot100Songs.map((song) => song.split(' - '));
+let result = [];
+billboardHot100Songs.forEach((songArr) => {
+  if (!result.includes(songArr[0])) {
+    result.push(songArr[0]);
+  }
+  if (!result.includes(songArr[1])) {
+    result.push(songArr[1]);
+  }
+});
+export default result.map((song) => {
   return { label: song, value: song.toUpperCase() };
 });
