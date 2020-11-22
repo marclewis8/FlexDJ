@@ -4,22 +4,33 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Footer, Navbar } from '../components';
 import { Button, List, Card } from 'antd';
-import { getPlaylistSongs } from '../endpoints/';
+import { MinusSquareOutlined } from '@ant-design/icons';
+
+import { getPlaylistSongs, removeSongFromPlaylist } from '../endpoints/';
 import ReactAudioPlayer from 'react-audio-player';
 import '../styles/indv-playlist.less';
 
 function Playlist() {
+  const [title, setTitle] = useState('Your Playlist');
+  const [edit, setEdit] = useState(false);
+
+  const handleEdit = () => {
+    setEdit(!edit);
+  };
+
   return (
     <div className="playlist">
       <Navbar />
       <div className="content">
         <h1 id="title">FlexDJ</h1>
-        <h2>Title</h2>
+        <h2>{title}</h2>
         <div style={{ flexDirection: 'row' }}>
-          <Button type="primary">Edit</Button>
+          <Button type="primary" onClick={handleEdit}>
+            {edit ? 'Finish Editing' : 'Edit'}
+          </Button>
           <Button type="primary">Play</Button>
         </div>
-        <PlaylistList></PlaylistList>
+        <PlaylistList saveTitle={setTitle} edit={edit}></PlaylistList>
         <Link href="/playlists">
           <Button type="primary" className="playlist-back">
             Back
@@ -31,37 +42,31 @@ function Playlist() {
   );
 }
 
-const data = [
-  {
-    platform: 'Deezer',
-    title: 'Freaking Me Out',
-    url:
-      'https://cdns-preview-6.dzcdn.net/stream/c-63008283820619d243fa84498f991860-6.mp3',
-  },
-  {
-    platform: 'YouTube',
-    title: 'Bet on It',
-    url: 'https://www.youtube.com/watch?v=k-t4vqd534Y',
-  },
-  {
-    platform: 'Spotify',
-    title: 'Panda',
-    url:
-      'https://p.scdn.co/mp3-preview/f1dd31865324f13731030330509046cfdcb3ef62?cid=27680975a57143ea91ad59b76071e135',
-  },
-];
-
-function PlaylistList() {
+function PlaylistList({ saveTitle, edit }) {
   const router = useRouter();
-  const [playlistId, setId] = useState(router.query.id);
   const [songs, setSongs] = useState([]);
+
+  const deleteSong = async (song) => {
+    await removeSongFromPlaylist(router.query.id, song.id);
+  };
 
   useEffect(() => {
     async function loadSongs() {
-      console.log(playlistId);
-      let res = await getPlaylistSongs(playlistId);
-      console.log(res);
-      setSongs(res.data);
+      let res = await getPlaylistSongs(router.query.id);
+      if (res && res.data) {
+        res.data.songs.forEach((song) => {
+          if (song.url.includes('youtube')) {
+            song.platform = 'YouTube';
+          } else if (song.url.includes('spotify')) {
+            song.platform = 'Spotify';
+          } else {
+            song.platform = 'Deezer';
+          }
+        });
+
+        setSongs(res.data.songs);
+        saveTitle(res.data.name);
+      }
     }
     loadSongs();
   }, []);
@@ -72,12 +77,25 @@ function PlaylistList() {
         <List
           size="large"
           bordered
-          dataSource={data}
+          dataSource={songs}
           renderItem={(item) => (
-            <List.Item>
-              <strong>{item.title}</strong>
+            <List.Item
+              actions={[
+                edit && (
+                  <MinusSquareOutlined
+                    onClick={() => deleteSong(item)}
+                    key="delete"
+                  />
+                ),
+              ]}
+            >
+              <strong>{item.name}</strong>
               {item.platform == 'YouTube' ? (
-                <ReactPlayer url={item.url} />
+                <ReactPlayer
+                  url={item.url}
+                  className="youtube-thumbnail"
+                  style={{ height: '200px', width: '200px' }}
+                />
               ) : (
                 <br></br>
               )}
