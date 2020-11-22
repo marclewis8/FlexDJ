@@ -22,7 +22,7 @@ export class SongController {
   @Post('add')
   @ApiResponse({ type: Song, status: 201 })
   async addSong(@Body() songData: AddSongDto) {
-    const {
+    let {
       name,
       url,
       icon,
@@ -32,11 +32,12 @@ export class SongController {
       preview,
       playlistId,
     } = songData;
-
     let existingSong = await this.songRepo.findOne({
       where: { url },
     });
-
+    if (!preview) {
+      preview = '';
+    }
     if (!existingSong) {
       existingSong = await this.songRepo.createAndSave(
         artist,

@@ -63,7 +63,7 @@ function Playlists() {
         <Button onClick={createPlaylist} type="primary">
           Add
         </Button>
-        {playlists?.length > 0 ? (
+        {playlists && playlists.length > 0 ? (
           <>
             <List
               dataSource={playlists}
@@ -81,7 +81,7 @@ function Playlists() {
                       >
                         View
                       </Link>,
-                      <a onClick={() => showDeleteConfirm(item.id)}> Delete</a>,
+                      <a onClick={() => showDeleteConfirm(item.id)}>Delete</a>,
                     ]}
                     key={item.id}
                   >

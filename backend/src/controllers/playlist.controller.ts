@@ -58,7 +58,7 @@ export class PlaylistController {
     }
 
     let existingPlaylist = await this.playlistRepo.findOne({
-      where: { id: params.playlist },
+      where: { id: params.playlistId },
     });
 
     if (!existingPlaylist) {
@@ -70,13 +70,15 @@ export class PlaylistController {
   @Get(':playlistId')
   @ApiResponse({ type: Playlist, status: 201 })
   async getPlaylist(@Param() params) {
-    return await this.playlistRepo.findById(params.id);
+    return await this.playlistRepo.findById(params.playlistId);
   }
 
   @Get(':playlistId/songs')
   @ApiResponse({ type: Song, status: 201 })
   async getSongs(@Param() params) {
-    let { songs } = await this.playlistRepo.findById(params.id);
-    return songs;
+    let result = await this.playlistRepo.findOne(params.playlistId, {
+      relations: ['songs'],
+    });
+    return result.songs;
   }
 }
