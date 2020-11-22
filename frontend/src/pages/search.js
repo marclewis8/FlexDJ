@@ -15,7 +15,6 @@ import Link from 'next/link';
 import _ from 'lodash';
 import { parseCookies } from 'nookies';
 import billboardHot100 from '../endpoints/billboard.js';
-import '../styles/search.less';
 
 const { Option } = AutoComplete;
 const { Meta } = Card;
