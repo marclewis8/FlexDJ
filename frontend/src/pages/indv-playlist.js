@@ -81,7 +81,7 @@ function PlaylistList({ saveTitle, edit }) {
       }
     }
     loadSongs();
-  }, []);
+  }, [songs, edit]);
 
   return (
     <div className="demo-infinite-container">
