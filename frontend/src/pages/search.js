@@ -17,7 +17,6 @@ import _ from 'lodash';
 import { parseCookies } from 'nookies';
 import billboardHot100 from '../endpoints/billboard.js';
 
-// const { getChart } = require('billboard-top-100')
 const { Option } = AutoComplete;
 const { Meta } = Card;
 
@@ -100,7 +99,7 @@ function SpotifyRequests() {
     async (val) => setItems(await search(val, spotifyToken, deezerToken)),
     2000
   );
-  // (song.value.substr(0, value.length) === value) || (song.value.split(" - ")[1].substr(0, value.length) === value))
+
   let [options, setOptions] = useState([]);
   const changeOptions = (value) => {
     value = value.toUpperCase();
