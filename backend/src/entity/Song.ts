@@ -37,11 +37,11 @@ export class Song {
   url: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   image: string; // URL to image
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   preview: string; // URL to preview mp3
 
   @ManyToMany(() => Playlist, (playlist) => playlist.songs)
