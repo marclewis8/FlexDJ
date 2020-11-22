@@ -22,7 +22,7 @@ function Playlists() {
     };
     getPlaylists();
     setUserId(user?.id);
-  }, [user]);
+  }, [user, playlists]);
 
   function showDeleteConfirm(playlistId) {
     confirm({
