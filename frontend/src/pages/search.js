@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { List, Card, Avatar, Button, Modal, AutoComplete } from 'antd';
-import Search from 'antd/lib/input/Search';
+import { List, Card, Avatar, Button, Modal, AutoComplete, Input } from 'antd';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Footer, Navbar, UserContext } from '../components';
 import {
@@ -16,6 +15,7 @@ import Link from 'next/link';
 import _ from 'lodash';
 import { parseCookies } from 'nookies';
 import billboardHot100 from '../endpoints/billboard.js';
+import '../styles/search.less';
 
 const { Option } = AutoComplete;
 const { Meta } = Card;
@@ -103,9 +103,19 @@ function SpotifyRequests() {
   return (
     <div>
       <Navbar></Navbar>
-      <AutoComplete onSearch={changeOptions} options={options}>
-        <Search onSearch={onSearch} />
-      </AutoComplete>
+      <div className="top">
+        <AutoComplete
+          onChange={changeOptions}
+          options={options}
+          style={{ width: '1000px' }}
+        >
+          <Input.Search
+            size="large"
+            placeholder="Search Song"
+            onSearch={onSearch}
+          ></Input.Search>
+        </AutoComplete>
+      </div>
       {items ? (
         <div className="songs">
           <List
@@ -113,8 +123,8 @@ function SpotifyRequests() {
             dataSource={items}
             renderItem={(item) => (
               <Card
-                style={{ width: 300 }}
-                cover={<img alt="thumbnail" src={item.image} />}
+                style={{ width: 360, marginRight: 0, marginBottom: 15 }}
+                cover={<img alt="thumbnail" src={item.image} height="300px" />}
                 actions={[
                   <PlusSquareOutlined
                     onClick={() => addSong(item)}
@@ -125,7 +135,10 @@ function SpotifyRequests() {
                 <Meta
                   avatar={<Avatar src={item.icon} />}
                   title={item.artist}
-                  description={item.name}
+                  description={item.name
+                    .replaceAll('&amp;', '&')
+                    .replaceAll('&quot;', '"')}
+                  style={{ height: '80px' }}
                 />
               </Card>
             )}
@@ -134,9 +147,6 @@ function SpotifyRequests() {
       ) : (
         <p></p>
       )}
-      <Link href="/">
-        <Button type="primary">Back to Home</Button>
-      </Link>
       <Footer></Footer>
     </div>
   );
