@@ -16,12 +16,6 @@ function SpotifyLaunch() {
     destroyCookie(null, 'deezerAuthToken');
     deezerToken = null;
   }
-
-  if (deezerToken == 'undefined') {
-    destroyCookie(null, 'deezerAuthToken');
-    deezerToken = null;
-  }
-
   return (
     <div>
       <Navbar />

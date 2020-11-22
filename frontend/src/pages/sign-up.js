@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { Form, Input, Button, DatePicker, Row, Col, Modal } from 'antd';
+import { parseCookies, destroyCookie } from 'nookies';
 import { Footer, Navbar, UserContext } from '../components';
 
 import { postUserSignUp } from '../endpoints/';
@@ -27,6 +28,10 @@ function MakeForm() {
     const result = await postUserSignUp(values);
     if (result.success) {
       storeUser(result.data);
+      const spotifyToken = parseCookies().spotifyAuthToken;
+      if (spotifyToken) {
+        destroyCookie(null, 'spotifyAuthToken');
+      }
       router.push('/');
     } else {
       return Modal.error({
