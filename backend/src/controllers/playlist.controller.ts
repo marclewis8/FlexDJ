@@ -79,6 +79,6 @@ export class PlaylistController {
     let result = await this.playlistRepo.findOne(params.playlistId, {
       relations: ['songs'],
     });
-    return result.songs;
+    return result;
   }
 }
