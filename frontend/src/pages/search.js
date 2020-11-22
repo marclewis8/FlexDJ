@@ -95,7 +95,7 @@ function SpotifyRequests() {
   const changeOptions = (value) => {
     value = value.toUpperCase();
     let res = billboardHot100
-      .filter((song) => song.value.includes(value))
+      .filter((song) => song.value.toUpperCase().includes(value))
       .slice(0, 3);
     setOptions(res);
   };
