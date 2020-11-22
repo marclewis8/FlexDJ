@@ -15,7 +15,9 @@ import '../styles/songs.less';
 import Link from 'next/link';
 import _ from 'lodash';
 import { parseCookies } from 'nookies';
+import billboardHot100 from '../endpoints/billboard.js';
 
+// const { getChart } = require('billboard-top-100')
 const { Option } = AutoComplete;
 const { Meta } = Card;
 
@@ -98,25 +100,12 @@ function SpotifyRequests() {
     async (val) => setItems(await search(val, spotifyToken, deezerToken)),
     2000
   );
-
-  let dummySongNames = [
-    'WAP',
-    'Take Care',
-    'Panda',
-    'Starboy',
-    'Big Sean',
-    'Circles',
-    'Dubstep',
-    'SOS',
-    'Burnin Up',
-  ];
-  dummySongNames = dummySongNames.map((song) => {
-    return { label: song, value: song };
-  });
+  // (song.value.substr(0, value.length) === value) || (song.value.split(" - ")[1].substr(0, value.length) === value))
   let [options, setOptions] = useState([]);
   const changeOptions = (value) => {
-    let res = dummySongNames
-      .filter((song) => song.label.substr(0, value.length) === value)
+    value = value.toUpperCase();
+    let res = billboardHot100
+      .filter((song) => song.value.includes(value))
       .slice(0, 3);
     setOptions(res);
   };
