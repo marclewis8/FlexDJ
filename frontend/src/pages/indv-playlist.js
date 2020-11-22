@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player/youtube';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Footer, Navbar } from '../components';
-import { Button, List, Card } from 'antd';
+import { Button, List, Card, Image } from 'antd';
 import { MinusSquareOutlined } from '@ant-design/icons';
 
 import { getPlaylistSongs, removeSongFromPlaylist } from '../endpoints/';
@@ -22,20 +22,32 @@ function Playlist() {
     <div className="playlist">
       <Navbar />
       <div className="content">
-        <h1 id="title">FlexDJ</h1>
-        <h2>{title}</h2>
-        <div style={{ flexDirection: 'row' }}>
-          <Button type="primary" onClick={handleEdit}>
+        <h2 id="plTitle">{title}</h2>
+        <div class="controls" style={{ flexDirection: 'row' }}>
+          <Button
+            type="primary"
+            onClick={handleEdit}
+            style={{ marginTop: '0px', marginBottom: '10px' }}
+          >
             {edit ? 'Finish Editing' : 'Edit'}
           </Button>
-          <Button type="primary">Play</Button>
+          <Button
+            type="primary"
+            style={{ marginTop: '0px', marginBottom: '10px' }}
+          >
+            Play
+          </Button>
+          <Link href="/playlists">
+            <Button
+              type="primary"
+              className="playlist-back"
+              style={{ marginTop: '0px', marginBottom: '10px' }}
+            >
+              Back
+            </Button>
+          </Link>
         </div>
         <PlaylistList saveTitle={setTitle} edit={edit}></PlaylistList>
-        <Link href="/playlists">
-          <Button type="primary" className="playlist-back">
-            Back
-          </Button>
-        </Link>
       </div>
       <Footer></Footer>
     </div>
@@ -89,21 +101,38 @@ function PlaylistList({ saveTitle, edit }) {
                 ),
               ]}
             >
-              <strong>{item.name}</strong>
+              <Image
+                src={item.image}
+                alt="Song Image"
+                height="150px"
+                width="150px"
+              ></Image>
+              <div class="songTitle">
+                <strong>
+                  {item.name.replaceAll('&quot;', '"').replaceAll('&amp;', '&')}
+                </strong>
+                <p style={{ fontSize: '15px', marginTop: '5px' }}>
+                  By: {item.artist}
+                </p>
+              </div>
               {item.platform == 'YouTube' ? (
                 <ReactPlayer
                   url={item.url}
                   className="youtube-thumbnail"
-                  style={{ height: '200px', width: '200px' }}
+                  height="20%"
+                  width="30%"
                 />
               ) : (
-                <br></br>
+                <p></p>
               )}
               {item.platform == 'Deezer' || item.platform == 'Spotify' ? (
-                <ReactAudioPlayer src={item.url} controls playsinline />
+                <ReactAudioPlayer src={item.preview} controls playsinline />
               ) : (
-                <br></br>
+                <p></p>
               )}
+              <a href={item.url} target="_blank">
+                <Image src={item.icon} height="50px" width="50px"></Image>
+              </a>
             </List.Item>
           )}
         />
