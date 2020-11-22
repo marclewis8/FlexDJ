@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import { deezerAuth, fetchDeezerToken } from '../endpoints';
 import { Footer, Navbar } from '../components';
 import _ from 'lodash';
+import '../styles/styles.less';
 
 function SpotifyLaunch() {
   const spotifyToken = parseCookies().spotifyAuthToken;
@@ -16,12 +17,6 @@ function SpotifyLaunch() {
     destroyCookie(null, 'deezerAuthToken');
     deezerToken = null;
   }
-
-  if (deezerToken == 'undefined') {
-    destroyCookie(null, 'deezerAuthToken');
-    deezerToken = null;
-  }
-
   return (
     <div>
       <Navbar />
@@ -61,6 +56,7 @@ function SpotifyLaunch() {
             scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
           />
           <Button
+            className="spotify-button"
             onClick={async (e) => {
               let headers = await deezerAuth();
               router.push(headers['x-final-url']);

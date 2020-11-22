@@ -5,7 +5,6 @@ import { OktaAuthOptions } from '@okta/okta-auth-js';
 import { UserRepository } from '../repos';
 import { getCustomRepository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
-import { response } from 'express';
 const OktaAuth = require('@okta/okta-auth-js');
 
 export interface RegisterData {
