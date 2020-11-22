@@ -114,5 +114,5 @@ billboardHot100Songs.forEach((songArr) => {
   }
 });
 export default result.map((song) => {
-  return { label: song, value: song.toUpperCase() };
+  return { label: song, value: song };
 });
