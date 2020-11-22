@@ -26,7 +26,11 @@ function Profile() {
     <div className="profile">
       <Navbar />
       <div className="content">
-        <h1 id="title">FlexDJ</h1>
+        <h2>
+          <strong>
+            <u>FlexDJ</u>
+          </strong>
+        </h2>
         {user ? (
           <>
             <h2>Welcome, {userInfo?.firstName}!</h2>

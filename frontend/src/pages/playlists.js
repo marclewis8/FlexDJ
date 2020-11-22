@@ -58,7 +58,11 @@ function Playlists() {
     <div className="playlists">
       <Navbar />
       <div className="content">
-        <h1 id="title">FlexDJ</h1>
+        <h2>
+          <strong>
+            <u>FlexDJ</u>
+          </strong>
+        </h2>
         <h2>Your Playlists</h2>
         <Button onClick={createPlaylist} type="primary">
           Add
