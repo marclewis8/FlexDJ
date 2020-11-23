@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import { useRouter } from 'next/router';
