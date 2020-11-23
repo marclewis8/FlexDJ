@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import { useRouter } from 'next/router';
@@ -10,13 +10,32 @@ import _ from 'lodash';
 import '../styles/styles.less';
 
 function SpotifyLaunch() {
-  const spotifyToken = parseCookies().spotifyAuthToken;
-  const deezerToken = parseCookies().deezerAuthToken;
+  let spotifyToken = parseCookies().spotifyAuthToken;
+  let deezerToken = parseCookies().deezerAuthToken;
   const router = useRouter();
-  if (deezerToken == 'undefined') {
-    destroyCookie(null, 'deezerAuthToken');
-    deezerToken = null;
-  }
+
+  useEffect(() => {
+    if (!spotifyToken) {
+      router.push('/auth');
+    }
+
+    if (deezerToken == 'undefined') {
+      destroyCookie(null, 'deezerAuthToken');
+      deezerToken = null;
+    }
+
+    async function checkDeezerToken() {
+      if (router.query.code) {
+        let res = await fetchDeezerToken(router.query.code);
+        setCookie(null, 'deezerAuthToken', res.access_token, {
+          maxAge: 60 * 60 * 1000,
+        });
+        router.push('/auth');
+      }
+    }
+    checkDeezerToken();
+  }, [spotifyToken, deezerToken, router.query.code]);
+
   return (
     <div>
       <Navbar />
@@ -30,15 +49,11 @@ function SpotifyLaunch() {
           </div>
         ) : (
           <div>
-            <h1>You are authenticated with Spotify!</h1>
+            <h2>You are authenticated with Spotify!</h2>
             <Button
               onClick={async (e) => {
                 let headers = await deezerAuth();
                 router.push(headers['x-final-url']);
-                let res = await fetchDeezerToken(router.query.code);
-                setCookie(null, 'deezerAuthToken', res.access_token, {
-                  maxAge: 60 * 60 * 1000,
-                });
               }}
             >
               Authenticate with Deezer
@@ -56,14 +71,9 @@ function SpotifyLaunch() {
             scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
           />
           <Button
-            className="spotify-button"
             onClick={async (e) => {
               let headers = await deezerAuth();
               router.push(headers['x-final-url']);
-              let res = await fetchDeezerToken(router.query.code);
-              setCookie(null, 'deezerAuthToken', res.access_token, {
-                maxAge: 60 * 60 * 1000,
-              });
             }}
           >
             Authenticate with Deezer
