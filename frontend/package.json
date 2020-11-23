@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Web app for cross-platform playlist creation + more.",
   "main": "index.js",
-  "proxy": "http://localhost:3001",
+  "proxy": "BACKEND_URL",
   "scripts": {
     "start": "next start",
     "dev": "node src/pages/api/server.js",
-    "build": "next build && next export",
+    "build": "NODE_ENV=production next build && next export",
     "lint": "eslint --ext .ts,.tsx,.js"
   },
   "repository": {
