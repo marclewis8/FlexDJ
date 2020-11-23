@@ -5,10 +5,11 @@
   "main": "index.js",
   "proxy": "BACKEND_URL",
   "scripts": {
-    "start": "next start",
+    "start": "next start -p $PORT",
     "dev": "node src/pages/api/server.js",
     "build": "NODE_ENV=production next build && next export",
-    "lint": "eslint --ext .ts,.tsx,.js"
+    "lint": "eslint --ext .ts,.tsx,.js",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
