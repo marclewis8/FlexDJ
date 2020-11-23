@@ -1,9 +1,12 @@
 import axios from 'axios';
 
+const url =
+  process.env.NODE_ENV !== 'production' ? './api' : process.env.BACKEND_URL;
+
 // User Sign Up & Login
 export const postUserSignUp = (form) => {
   return axios
-    .post('./api/user/add-user', form)
+    .post(`${url}/user/add-user`, form)
     .then((res) => {
       return { success: true, data: res.data };
     })
@@ -26,7 +29,7 @@ export const postUserSignUp = (form) => {
 
 export const postUserLogin = (form) => {
   return axios
-    .post('./api/sign-in', form)
+    .post(`${url}/sign-in`, form)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -37,7 +40,7 @@ export const postUserLogin = (form) => {
 
 export const getUserInfo = (userId) => {
   return axios
-    .get(`./api/user/${userId}`)
+    .get(`${url}/user/${userId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -49,7 +52,7 @@ export const getUserInfo = (userId) => {
 // Get User Playlists
 export const getUserPlaylists = (userId) => {
   return axios
-    .get(`./api/user/${userId}/playlists`)
+    .get(`${url}/user/${userId}/playlists`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -61,7 +64,7 @@ export const getUserPlaylists = (userId) => {
 // Add & Remove Songs (form needs: name, url, icon, artist, externalId, playlistId)
 export const addIndividualSong = (form) => {
   return axios
-    .post('./api/song/add', form)
+    .post(`${url}/song/add`, form)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -72,7 +75,7 @@ export const addIndividualSong = (form) => {
 
 export const removeIndividualSong = (songId) => {
   return axios
-    .post(`./api/song/remove/${songId}`)
+    .post(`${url}/song/remove/${songId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -83,7 +86,7 @@ export const removeIndividualSong = (songId) => {
 
 export const getIndividualSong = (songId) => {
   return axios
-    .get(`./api/song/${songId}`, form)
+    .get(`${url}/song/${songId}`, form)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -95,7 +98,7 @@ export const getIndividualSong = (songId) => {
 // Playlist Add & Remove (form needs: name, genre, icon, userId)
 export const addPlaylist = (form) => {
   return axios
-    .post('./api/playlist/add', form)
+    .post(`${url}/playlist/add`, form)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -106,7 +109,7 @@ export const addPlaylist = (form) => {
 
 export const removePlaylist = (playlistId) => {
   return axios
-    .post(`./api/playlist/remove/${playlistId}`)
+    .post(`${url}/playlist/remove/${playlistId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -117,7 +120,7 @@ export const removePlaylist = (playlistId) => {
 
 export const removeSongFromPlaylist = (playlistId, songId) => {
   return axios
-    .post(`./api/playlist/${playlistId}/remove/${songId}`)
+    .post(`${url}/playlist/${playlistId}/remove/${songId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -128,7 +131,7 @@ export const removeSongFromPlaylist = (playlistId, songId) => {
 
 export const getPlaylist = (playlistId) => {
   return axios
-    .get(`./api/playlist/${playlistId}`)
+    .get(`${url}/playlist/${playlistId}`)
     .then((res) => {
       return { data: res.data, success: true };
     })
@@ -139,7 +142,7 @@ export const getPlaylist = (playlistId) => {
 
 export const getPlaylistSongs = (playlistId) => {
   return axios
-    .get(`./api/playlist/${playlistId}/songs`)
+    .get(`${url}/playlist/${playlistId}/songs`)
     .then((res) => {
       return { data: res.data, success: true };
     })
