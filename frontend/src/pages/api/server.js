@@ -9,7 +9,7 @@ const handle = app.getRequestHandler();
 
 const apiPaths = {
   '/api': {
-    target: 'http://localhost:3001',
+    target: process.env.BACKEND_URL,
     pathRewrite: {
       '^/api': '/',
     },
