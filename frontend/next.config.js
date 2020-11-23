@@ -22,6 +22,7 @@ const nextConfig = {
     youtubeAPIKey: process.env.youtubeAPIKey,
     deezerAppID: process.env.deezerAppID,
     deezerSecret: process.env.deezerSecret,
+    BACKEND_URL: process.env.BACKEND_URL,
   },
   distDir: '.next',
 };
