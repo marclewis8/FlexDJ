@@ -51,7 +51,7 @@ function SpotifyLaunch() {
       ) : (
         <div>
           <SpotifyAuth
-            redirectUri="http://localhost:3000/auth"
+            redirectUri="https://flexdj.vercel.app/auth"
             clientID={process.env.spotifyClientID}
             scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
           />

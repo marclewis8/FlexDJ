@@ -7,7 +7,7 @@ export const deezerAuth = () => {
       'https://cors-anywhere.herokuapp.com/https://connect.deezer.com/oauth/auth.php',
     params: {
       app_id: process.env.deezerAppID,
-      redirect_uri: 'http://localhost:3000/auth',
+      redirect_uri: 'https://flexdj.vercel.app/auth',
       perms: 'basic_access,email',
     },
   }).then((res) => res.headers);
