@@ -4,10 +4,20 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
+const app = next({ dev: true });
 const handle = app.getRequestHandler();
 
-const apiPaths = {
+const devApiPaths = {
+  '/api': {
+    target: 'http://localhost:3001',
+    pathRewrite: {
+      '^/api': '/',
+    },
+    changeOrigin: true,
+  },
+};
+
+const prodApiPaths = {
   '/api': {
     target: process.env.BACKEND_URL,
     pathRewrite: {
@@ -17,15 +27,15 @@ const apiPaths = {
   },
 };
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
 app
   .prepare()
   .then(() => {
     const server = express();
 
-    if (isDevelopment) {
-      server.use('/api', createProxyMiddleware(apiPaths['/api']));
+    if (dev) {
+      server.use('/api', createProxyMiddleware(devApiPaths['/api']));
+    } else {
+      server.use('/api', createProxyMiddleware(prodApiPaths['/api']));
     }
 
     server.all('*', (req, res) => {
